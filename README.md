@@ -40,4 +40,4 @@ serverless deploy
 
 Manual steps suck so this project uses Bitbucket Pipelines to automate the build and deployment to AWS - see [bitbucket-pipelines.yml](../blob/master/bitbucket-pipelines.yml). AWS credentials are set in this file to take advantage of [Bitbucket Pipelines environment variables](https://confluence.atlassian.com/bitbucket/environment-variables-in-bitbucket-pipelines-794502608.html).
 
-I've created a [Docker-powered build/deployment environment for Serverless projects](https://github.com/jch254/docker-node-serverless) to use with Bitbucket Pipelines that is used by this project.
+I've created a [Docker-powered build/deployment environment for Serverless projects](https://github.com/jch254/docker-node-serverless) to use with Bitbucket Pipelines which is used by this project.
