@@ -33,6 +33,7 @@ functions:
       - http:
           method: post
           path: items
+          cors: true
 
   getItems:
     handler: handler.getItems
@@ -42,6 +43,7 @@ functions:
       - http:
           method: get
           path: items
+          cors: true
 
 resources:
   Resources:
