@@ -6,6 +6,8 @@ Live demo: https://5p7z1m4of5.execute-api.ap-southeast-2.amazonaws.com/prod/item
 
 See [Apiary](http://docs.serverlesses6dynamodbwebapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
 
+[Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-es6-dynamodb-webapi/addon/pipelines/home).
+
 ## Technologies Used
 
 * [Node.js](https://github.com/nodejs/node)
