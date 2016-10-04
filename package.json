@@ -1,0 +1,27 @@
+{
+  "name": "serverless-es6-dynamodb-webapi",
+  "version": "1.0.0",
+  "description": "Serverless, Webpack and DynamoDB-powered web API",
+  "main": "handler.js",
+  "scripts": {},
+  "author": "Jordan Hornblow <jordan@jch254.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.6.6",
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "serverless-webpack": "^1.0.0-rc.2",
+    "webpack": "^1.13.2",
+    "webpack-node-externals": "^1.4.3"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "babel-polyfill": "^6.16.0",
+    "chance": "^1.0.4",
+    "json-loader": "^0.5.4",
+    "moment": "^2.15.1"
+  }
+}

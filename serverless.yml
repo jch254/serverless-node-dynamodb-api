@@ -1,0 +1,60 @@
+service: serverless-es6-dynamodb-webapi
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: prod
+  region: ap-southeast-2
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+    - dynamodb:DescribeTable
+    - dynamodb:Scan
+    - dynamodb:PutItem
+    - dynamodb:GetItem
+    - dynamodb:DeleteItem
+    - dynamodb:Query
+    - dynamodb:UpdateItem
+    Resource:
+    - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
+
+custom:
+  webpackIncludeModules: true
+
+functions:
+  createItem:
+    handler: handler.createItem
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: post
+          path: items
+
+  getItems:
+    handler: handler.getItems
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: items
+
+resources:
+  Resources:
+    ItemTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+        KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: "items"
