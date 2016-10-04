@@ -4,7 +4,7 @@ A simple web API powered by Serverless (Node.js) and DynamoDB, intended as a sta
 
 Live demo: https://5p7z1m4of5.execute-api.ap-southeast-2.amazonaws.com/prod/items.
 
-See [apiary.apib](../master/apiary.apib) for API structure.
+See [Apiary](http://docs.serverlesses6dynamodbwebapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
 
 ## Technologies Used
 
