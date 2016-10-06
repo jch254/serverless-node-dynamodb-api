@@ -10,31 +10,56 @@ const db = new AWS.DynamoDB();
 
 const mapItem = (item) => (
   {
-    "id": item.id.S,
-    "name": item.name.S,
-    "createdUtc": item.createdUtc.S
+    id: item.id.S,
+    name: item.name.S,
+    createdUtc: item.createdUtc.S
   }
 );
 
-export const createItem = (event, context, cb) => {
-  console.log("createItem", JSON.stringify(event));
+const mapData = (data) => (
+  {
+    id: data.Attributes.id.S,
+    name: data.Attributes.name.S
+  }
+);
 
-  const id = chance.guid();
+export const getItems = (event, context, cb) => {
+  console.log('getItems', JSON.stringify(event));
 
   const params = {
-    "Item": {
-      "id": {
-        "S": id
+    TableName: 'items'
+  };
+
+  db.scan(params, (err, data) => {
+    if (err) {
+      cb(err);
+    } else {
+      const res = {
+        'items': data.Items.map(mapItem)
+      };
+
+      cb(null, res);
+    }
+  });
+};
+
+export const createItem = (event, context, cb) => {
+  console.log('createItem', JSON.stringify(event));
+
+  const params = {
+    Item: {
+      id: {
+        S: chance.guid()
       },
-      "name": {
-        "S": event.body.name
+      name: {
+        S: event.body.name
       },
-      "createdUtc": {
-        "S": moment().utc().toISOString()
+      createdUtc: {
+        S: moment().utc().toISOString()
       }
     },
-    "TableName": "items",
-    "ConditionExpression": "attribute_not_exists(id)"
+    TableName: 'items',
+    ConditionExpression: 'attribute_not_exists(id)'
   };
 
   db.putItem(params, (err, data) => {
@@ -46,22 +71,47 @@ export const createItem = (event, context, cb) => {
   });
 };
 
-export const getItems = (event, context, cb) => {
-  console.log("getItems", JSON.stringify(event));
+export const updateItem = (event, context, cb) => {
+  console.log('updateItem', JSON.stringify(event));
 
   const params = {
-    "TableName": "items"
+    TableName: 'items',
+    Key: {
+      id: { S: event.path.id }
+    },
+    AttributeUpdates: {
+      name: {
+        Action: 'PUT',
+        Value: { S: event.body.name }
+      }
+    },
+    ReturnValues: 'ALL_NEW',
   };
 
-  db.scan(params, function(err, data) {
-    if (err) {
-      cb(err);
-    } else {
-      const res = {
-        "items": data.Items.map(mapItem)
-      };
+  db.updateItem(params, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, mapData(data));
+      }
+  });
+};
 
-      cb(null, res);
+export const deleteItem = (event, context, cb) => {
+  console.log('deleteItem', JSON.stringify(event));
+
+  const params = {
+    TableName: 'items',
+    Key: {
+      id: { S: event.path.id }
     }
+  };
+
+  db.deleteItem(params, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, null);
+      }
   });
 };

@@ -25,6 +25,16 @@ custom:
   webpackIncludeModules: true
 
 functions:
+  getItems:
+    handler: handler.getItems
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: items
+          cors: true
+
   createItem:
     handler: handler.createItem
     memory: 512
@@ -35,14 +45,24 @@ functions:
           path: items
           cors: true
 
-  getItems:
-    handler: handler.getItems
+  updateItem:
+    handler: handler.updateItem
     memory: 512
     timeout: 60
     events:
       - http:
-          method: get
-          path: items
+          method: patch
+          path: items/{id}
+          cors: true
+
+  deleteItem:
+    handler: handler.deleteItem
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: delete
+          path: items/{id}
           cors: true
 
 resources:

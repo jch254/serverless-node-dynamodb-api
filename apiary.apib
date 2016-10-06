@@ -16,7 +16,7 @@ Operations to retrieve/update Items.
 
     + Attributes
 
-        + items (array[Item])
+        + items (array[FullItem])
 
 ### Create an Item [POST]
 
@@ -29,11 +29,39 @@ Operations to retrieve/update Items.
 
 + Response 200 (application/json; charset=utf-8)
 
-    + Attributes (Item)
+    + Attributes (FullItem)
+
+### Edit an Item [PATCH /items/{id}]
+
++ Parameters
+    + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
+
++ Request (application/json; charset=utf-8)
+    + Body
+
+            {
+                "name" : "James Bond"
+            }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes (UpdatedItem)
+
+### Delete an Item [DELETE /items/{id}]
+
++ Parameters
+    + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
+
++ Response 200
+
 
 ## Data Structures
 
-### Item (object)
+### FullItem (object)
 + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
 + name: James Bond (string, required)
 + createdUtc: `2016-10-17T00:00:00.000Z` (string, required)
+
+### UpdatedItem (object)
++ id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
++ name: Jim Bond (string, required)
