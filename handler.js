@@ -43,6 +43,25 @@ export const getItems = (event, context, cb) => {
   });
 };
 
+export const getItem = (event, context, cb) => {
+  console.log('getItem', JSON.stringify(event));
+
+  const params = {
+    TableName: 'items',
+    Key: {
+      id: { S: event.path.id }
+    }
+  };
+
+  db.getItem(params, (err, data) => {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, mapItem(data.Item));
+    }
+  });
+};
+
 export const createItem = (event, context, cb) => {
   console.log('createItem', JSON.stringify(event));
 

@@ -35,6 +35,16 @@ functions:
           path: items
           cors: true
 
+  getItem:
+    handler: handler.getItem
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: items/{id}
+          cors: true
+
   createItem:
     handler: handler.createItem
     memory: 512
