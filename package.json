@@ -7,7 +7,7 @@
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "^2.6.6",
+    "aws-sdk": "^2.6.10",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-runtime": "^6.15.0",
