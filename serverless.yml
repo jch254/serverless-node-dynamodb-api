@@ -42,7 +42,7 @@ functions:
     events:
       - http:
           method: get
-          path: items/{id}
+          path: items/id
           cors: true
 
   createItem:
@@ -62,7 +62,7 @@ functions:
     events:
       - http:
           method: patch
-          path: items/{id}
+          path: items/id
           cors: true
 
   deleteItem:
@@ -72,7 +72,7 @@ functions:
     events:
       - http:
           method: delete
-          path: items/{id}
+          path: items/id
           cors: true
 
 resources:
