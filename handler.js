@@ -42,7 +42,7 @@ export const getItems = (event, context, cb) => {
         cb(null, res);
       }
     });
-  catch (err) {
+  } catch (err) {
     cb(err);
   }
 };
