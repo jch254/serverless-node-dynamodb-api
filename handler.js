@@ -57,13 +57,17 @@ export const getItem = (event, context, cb) => {
     }
   };
 
-  db.getItem(params, (err, data) => {
-    if (err) {
-      cb(err);
-    } else {
-      cb(null, mapItem(data.Item));
-    }
-  });
+  try {
+    db.getItem(params, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, mapItem(data.Item));
+      }
+    });
+  } catch (err) {
+    cb(err);
+  }
 };
 
 export const createItem = (event, context, cb) => {
@@ -85,13 +89,17 @@ export const createItem = (event, context, cb) => {
     ConditionExpression: 'attribute_not_exists(id)'
   };
 
-  db.putItem(params, (err, data) => {
-    if (err) {
-      cb(err);
-    } else {
-      cb(null, mapItem(params.Item));
-    }
-  });
+  try {
+    db.putItem(params, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, mapItem(params.Item));
+      }
+    });
+  } catch (err) {
+    cb(err);
+  }
 };
 
 export const updateItem = (event, context, cb) => {
@@ -111,13 +119,17 @@ export const updateItem = (event, context, cb) => {
     ReturnValues: 'ALL_NEW',
   };
 
-  db.updateItem(params, (err, data) => {
-      if (err) {
-        cb(err);
-      } else {
-        cb(null, mapData(data));
-      }
-  });
+  try {
+    db.updateItem(params, (err, data) => {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, mapData(data));
+        }
+    });
+  } catch (err) {
+    cb(err);
+  }
 };
 
 export const deleteItem = (event, context, cb) => {
@@ -130,11 +142,15 @@ export const deleteItem = (event, context, cb) => {
     }
   };
 
-  db.deleteItem(params, (err, data) => {
-      if (err) {
-        cb(err);
-      } else {
-        cb(null, null);
-      }
-  });
+  try {
+    db.deleteItem(params, (err, data) => {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, null);
+        }
+    });
+  } catch (err) {
+    cb(err);
+  }
 };
