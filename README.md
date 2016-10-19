@@ -2,7 +2,7 @@
 
 [Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-es6-dynamodb-webapi/addon/pipelines/home)
 
-A simple web API powered by Serverless (Node.js) and DynamoDB, intended as a starting point for Serverless web APIs. This project uses serverless-webpack with Babel to compile handler functions written in ES6.
+A simple web API powered by Serverless (Node.js) and DynamoDB, intended as a starting point for Serverless web APIs. This project uses serverless-webpack with Babel to compile handler functions written in ES6. I've also created a [simple React/Redux-powered UI](https://github.com/jch254/react-redux-terraform-aws) to front this API.
 
 See [Apiary](http://docs.serverlesses6dynamodbwebapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
 
