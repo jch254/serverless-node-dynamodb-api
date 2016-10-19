@@ -1,12 +1,10 @@
-# Serverless-es6-dynamodb-webapi
+# [Serverless-es6-dynamodb-webapi (Live Demo)](https://serverless-web-api.603.nu)
+
+[Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-es6-dynamodb-webapi/addon/pipelines/home)
 
 A simple web API powered by Serverless (Node.js) and DynamoDB, intended as a starting point for Serverless web APIs. This project uses serverless-webpack with Babel to compile handler functions written in ES6.
 
-Live demo: https://5p7z1m4of5.execute-api.ap-southeast-2.amazonaws.com/prod/items.
-
 See [Apiary](http://docs.serverlesses6dynamodbwebapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
-
-[Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-es6-dynamodb-webapi/addon/pipelines/home)
 
 ## Technologies Used
 
