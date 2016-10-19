@@ -30,17 +30,21 @@ export const getItems = (event, context, cb) => {
     TableName: 'items'
   };
 
-  db.scan(params, (err, data) => {
-    if (err) {
-      cb(err);
-    } else {
-      const res = {
-        'items': data.Items.map(mapItem)
-      };
+  try {
+    db.scan(params, (err, data) => {
+      if (err) {
+        cb(err);
+      } else {
+        const res = {
+          'items': data.Items.map(mapItem)
+        };
 
-      cb(null, res);
-    }
-  });
+        cb(null, res);
+      }
+    });
+  catch (err) {
+    cb(err);
+  }
 };
 
 export const getItem = (event, context, cb) => {
