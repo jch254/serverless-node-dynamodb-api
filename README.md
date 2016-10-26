@@ -25,7 +25,7 @@ See [Apiary](http://docs.serverlesses6dynamodbwebapi.apiary.io) for API structur
 Serverless-webpack offers great tooling for local Serverless development. To start a local server that will mimic AWS API Gateway, run the commands below. Code will be reloaded upon change so that every request to your local server will serve the latest code.
 
 ```
-npm install
+yarn install
 serverless webpack serve
 ```
 
@@ -34,7 +34,7 @@ serverless webpack serve
 To deploy/manage this service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/02-providers/aws/01-setup.md) for further info. After you have done this, run the commands below to deploy the service:
 
 ```
-npm install
+yarn install
 serverless deploy
 ```
 
