@@ -61,10 +61,12 @@ export const getItems = (event, context, callback) => {
 export const getItem = (event, context, callback) => {
   console.log('getItem', JSON.stringify(event));
 
+  const path = isLocal ? event.path : event.pathParameters;
+
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.pathParameters.id },
+      id: { S: path.id },
     },
   };
 
@@ -72,6 +74,8 @@ export const getItem = (event, context, callback) => {
     db.getItem(params, (err, data) => {
       if (err) {
         callback(createResponse(500, { message: err.message || 'Internal server error' }));
+      } else if (!data.Item) {
+        callback(null, createResponse(404, { message: `An item could not be found with id: ${path.id}` }));
       } else {
         callback(null, createResponse(200, mapItem(data.Item)));
       }
@@ -118,12 +122,13 @@ export const createItem = (event, context, callback) => {
 export const updateItem = (event, context, callback) => {
   console.log('updateItem', JSON.stringify(event));
 
+  const path = isLocal ? event.path : event.pathParameters;
   const body = isLocal ? event.body : JSON.parse(event.body);
 
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.pathParameters.id },
+      id: { S: path.id },
     },
     AttributeUpdates: {
       name: {
@@ -150,10 +155,12 @@ export const updateItem = (event, context, callback) => {
 export const deleteItem = (event, context, callback) => {
   console.log('deleteItem', JSON.stringify(event));
 
+  const path = isLocal ? event.path : event.pathParameters;
+
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.pathParameters.id },
+      id: { S: path.id },
     },
   };
 
