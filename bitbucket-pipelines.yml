@@ -5,4 +5,5 @@ pipelines:
       - step:
           script:
             - yarn install
+            - export NODE_ENV=production
             - serverless deploy

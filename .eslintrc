@@ -1,0 +1,11 @@
+{
+  extends: "airbnb-base",
+  env: {
+    node: true,
+    es6: true
+  },
+  parser: "babel-eslint",
+  rules: {
+    max-len: ["error", 120, 2]
+  }
+}
