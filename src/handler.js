@@ -64,7 +64,7 @@ export const getItem = (event, context, callback) => {
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.path.id },
+      id: { S: event.pathParameters.id },
     },
   };
 
@@ -123,7 +123,7 @@ export const updateItem = (event, context, callback) => {
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.path.id },
+      id: { S: event.pathParameters.id },
     },
     AttributeUpdates: {
       name: {
@@ -153,7 +153,7 @@ export const deleteItem = (event, context, callback) => {
   const params = {
     TableName: 'items',
     Key: {
-      id: { S: event.path.id },
+      id: { S: event.pathParameters.id },
     },
   };
 
