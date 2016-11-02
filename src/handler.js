@@ -4,12 +4,14 @@ import AWS from 'aws-sdk';
 
 const chance = new Chance();
 
-const db = process.env.NODE_ENV === 'production' ?
-  new AWS.DynamoDB() :
+const isLocal = process.env.NODE_ENV !== 'production';
+
+const db = isLocal ?
   new AWS.DynamoDB({
     region: 'localhost',
     endpoint: `http://localhost:${process.env.DYNAMODB_PORT}`,
-  });
+  }) :
+  new AWS.DynamoDB();
 
 const mapItem = item => (
   {
@@ -82,13 +84,15 @@ export const getItem = (event, context, callback) => {
 export const createItem = (event, context, callback) => {
   console.log('createItem', JSON.stringify(event));
 
+  const body = isLocal ? event.body : JSON.parse(event.body);
+
   const params = {
     Item: {
       id: {
         S: chance.guid(),
       },
       name: {
-        S: event.body.name,
+        S: body.name,
       },
       createdUtc: {
         S: moment().utc().toISOString(),
@@ -114,6 +118,8 @@ export const createItem = (event, context, callback) => {
 export const updateItem = (event, context, callback) => {
   console.log('updateItem', JSON.stringify(event));
 
+  const body = isLocal ? event.body : JSON.parse(event.body);
+
   const params = {
     TableName: 'items',
     Key: {
@@ -122,7 +128,7 @@ export const updateItem = (event, context, callback) => {
     AttributeUpdates: {
       name: {
         Action: 'PUT',
-        Value: { S: event.body.name },
+        Value: { S: body.name },
       },
     },
     ReturnValues: 'ALL_NEW',

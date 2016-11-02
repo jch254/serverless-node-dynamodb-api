@@ -2,7 +2,7 @@
   "name": "serverless-es6-dynamodb-webapi",
   "version": "1.0.0",
   "description": "Serverless, Webpack and DynamoDB-powered web API",
-  "main": "handler.js",
+  "main": "src/handler.js",
   "scripts": {},
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",

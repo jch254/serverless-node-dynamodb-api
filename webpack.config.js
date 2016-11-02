@@ -4,7 +4,7 @@ var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: [
-    path.join(__dirname, 'handler.js'),
+    path.join(__dirname, 'src/handler.js'),
   ],
   output: {
     path: path.join(__dirname, '.webpack'),
