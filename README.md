@@ -45,7 +45,6 @@ serverless dynamodb start
 
 Serverless-webpack offers great tooling for local Serverless development. To start a local server that will mimic AWS API Gateway, run the commands below. Code will be reloaded upon change so that every request to your local server will serve the latest code.
 
-
 ```
 yarn install
 serverless webpack serve

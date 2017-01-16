@@ -24,13 +24,12 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-        include: __dirname,
-        exclude: /node_modules/
+        include: path.join(__dirname, 'src'),
       },
       {
         test: /\.json$/,
-        loader: "json",
-        include: __dirname
+        loader: 'json',
+        include: path.join(__dirname, 'src'),
       }
     ]
   },
