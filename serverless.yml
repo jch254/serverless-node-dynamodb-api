@@ -42,7 +42,7 @@ functions:
           method: get
           path: items
           cors: true
-          integration: proxy
+          integration: lambda-proxy
 
   getItem:
     handler: handler.getItem
@@ -53,7 +53,7 @@ functions:
           method: get
           path: items/{id}
           cors: true
-          integration: proxy
+          integration: lambda-proxy
 
   createItem:
     handler: handler.createItem
@@ -64,7 +64,7 @@ functions:
           method: post
           path: items
           cors: true
-          integration: proxy
+          integration: lambda-proxy
 
   updateItem:
     handler: handler.updateItem
@@ -75,7 +75,7 @@ functions:
           method: patch
           path: items/{id}
           cors: true
-          integration: proxy
+          integration: lambda-proxy
 
   deleteItem:
     handler: handler.deleteItem
@@ -86,7 +86,7 @@ functions:
           method: delete
           path: items/{id}
           cors: true
-          integration: proxy
+          integration: lambda-proxy
 
 resources:
   Resources:
