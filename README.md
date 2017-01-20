@@ -66,9 +66,9 @@ TBC
 
 To deploy/manage this service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/providers/aws/guide/credentials.md) for further info. After you have done this, run the commands below to deploy the service:
 
-**NODE_ENV environment variable must be set to production before `serverless deploy` command below.**
+**NODE_ENV and AUTH0_CLIENT_SECRET environment variables must be set to production before `serverless deploy` command below.**
 
-E.g. `NODE_ENV=production serverless deploy`
+E.g. `NODE_ENV=production AUTH0_CLIENT_SECRET=YOUR_SECRET serverless deploy`
 
 ```
 yarn install

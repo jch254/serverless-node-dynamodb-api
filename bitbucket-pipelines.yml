@@ -4,6 +4,6 @@ pipelines:
     master:
       - step:
           script:
-            - yarn install
+            - yarn install --ignore-engines
             - export NODE_ENV=production
             - serverless deploy
