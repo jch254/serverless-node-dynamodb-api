@@ -50,6 +50,7 @@ functions:
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   getItem:
     handler: handler.getItem
@@ -64,6 +65,7 @@ functions:
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   createItem:
     handler: handler.createItem
@@ -78,6 +80,7 @@ functions:
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   updateItem:
     handler: handler.updateItem
@@ -92,6 +95,7 @@ functions:
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   deleteItem:
     handler: handler.deleteItem
@@ -106,6 +110,7 @@ functions:
           authorizer:
             name: authorize
             resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
 resources:
   Resources:
