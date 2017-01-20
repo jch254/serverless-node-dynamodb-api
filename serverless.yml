@@ -47,7 +47,9 @@ functions:
           path: items
           cors: true
           integration: lambda-proxy
-          authorizer: authorize
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
 
   getItem:
     handler: handler.getItem
@@ -59,7 +61,9 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
-          authorizer: authorize
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
 
   createItem:
     handler: handler.createItem
@@ -71,7 +75,9 @@ functions:
           path: items
           cors: true
           integration: lambda-proxy
-          authorizer: authorize
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
 
   updateItem:
     handler: handler.updateItem
@@ -83,7 +89,9 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
-          authorizer: authorize
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
 
   deleteItem:
     handler: handler.deleteItem
@@ -95,7 +103,9 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
-          authorizer: authorize
+          authorizer:
+            name: authorize
+            resultTtlInSeconds: 0
 
 resources:
   Resources:
