@@ -1,8 +1,9 @@
-service: serverless-es6-dynamodb-webapi
+service: serverless-node-dynamodb-api
 
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
+  - serverless-offline
 
 provider:
   name: aws
@@ -33,6 +34,9 @@ custom:
       dir: ./migrations
 
 functions:
+  authorize:
+    handler: handler.authorize
+
   getItems:
     handler: handler.getItems
     memory: 512
@@ -43,6 +47,7 @@ functions:
           path: items
           cors: true
           integration: lambda-proxy
+          authorizer: authorize
 
   getItem:
     handler: handler.getItem
@@ -54,6 +59,7 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
+          authorizer: authorize
 
   createItem:
     handler: handler.createItem
@@ -65,6 +71,7 @@ functions:
           path: items
           cors: true
           integration: lambda-proxy
+          authorizer: authorize
 
   updateItem:
     handler: handler.updateItem
@@ -76,6 +83,7 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
+          authorizer: authorize
 
   deleteItem:
     handler: handler.deleteItem
@@ -87,19 +95,34 @@ functions:
           path: items/{id}
           cors: true
           integration: lambda-proxy
+          authorizer: authorize
 
 resources:
   Resources:
-    ItemTable:
+    ItemsTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
+        TableName: "items"
         AttributeDefinitions:
         - AttributeName: "id"
+          AttributeType: "S"
+        - AttributeName: "userId"
           AttributeType: "S"
         KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
+        - AttributeName: "userId"
+          KeyType: "RANGE"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: "items"
+        GlobalSecondaryIndexes:
+        - IndexName: "userId-index"
+          KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1

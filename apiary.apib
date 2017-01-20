@@ -1,9 +1,9 @@
 FORMAT: 1A
-HOST: https://5p7z1m4of5.execute-api.ap-southeast-2.amazonaws.com/prod/
+HOST: TODO
 
-# Serverless-es6-dynamodb-webapi
+# Serverless-node-dynamodb-api
 
-A simple API powered by Serverless (Node.js) and DynamoDB, intended as a starting point for Serverless APIs. This project uses serverless-webpack with Babel to compile handler functions written in ES6.
+A simple API powered by Serverless, Node.js and DynamoDB, intended as a starting point for Serverless APIs.
 
 # Group Items
 Operations to retrieve/update Items.
@@ -12,33 +12,59 @@ Operations to retrieve/update Items.
 
 ### Get all Items [GET]
 
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
 + Response 200 (application/json; charset=utf-8)
 
     + Attributes
 
-        + items (array[FullItem])
+        + items (array[Item])
+
++ Response 401 (application/json; charset=utf-8)
+
+    + Attributes (UnauthorizedResponse)
 
 ### Get a single Item [GET /items/{id}]
 
 + Parameters
     + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
 
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
 + Response 200 (application/json; charset=utf-8)
 
-    + Attributes (FullItem)
+    + Attributes (Item)
+
++ Response 401 (application/json; charset=utf-8)
+
+    + Attributes (UnauthorizedResponse)
 
 ### Create an Item [POST]
 
 + Request (application/json; charset=utf-8)
+    + Headers
+
+            Authorization: Bearer JWT
+
     + Body
 
             {
                 "name" : "James Bond"
             }
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 201 (application/json; charset=utf-8)
 
-    + Attributes (FullItem)
+    + Attributes (Item)
+
++ Response 401 (application/json; charset=utf-8)
+
+    + Attributes (UnauthorizedResponse)
 
 ### Edit an Item [PATCH /items/{id}]
 
@@ -46,31 +72,47 @@ Operations to retrieve/update Items.
     + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
 
 + Request (application/json; charset=utf-8)
+    + Headers
+
+            Authorization: Bearer JWT
+
     + Body
 
             {
                 "name" : "Jim Bond"
             }
 
-+ Response 200 (application/json; charset=utf-8)
++ Response 200
 
-    + Attributes (UpdatedItem)
++ Response 401 (application/json; charset=utf-8)
+
+    + Attributes (UnauthorizedResponse)
 
 ### Delete an Item [DELETE /items/{id}]
 
 + Parameters
     + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
 
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
 + Response 200
+
++ Response 401 (application/json; charset=utf-8)
+
+    + Attributes (UnauthorizedResponse)
 
 
 ## Data Structures
 
-### FullItem (object)
+### Item (object)
 + id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
 + name: James Bond (string, required)
 + createdUtc: `2016-10-17T00:00:00.000Z` (string, required)
 
-### UpdatedItem (object)
-+ id: `a34839f1-4896-4770-99fc-b9c8c2add08d` (string, required)
-+ name: Jim Bond (string, required)
+### UnauthorizedResponse (object)
++ statusCode: 401 (number, required)
++ error: Unauthorized (string, required)
++ message: Unauthorized (string, required)

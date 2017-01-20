@@ -1,176 +1,117 @@
-import Chance from 'chance';
-import moment from 'moment';
-import AWS from 'aws-sdk';
+import jwt from 'jsonwebtoken';
 
-const chance = new Chance();
-
-const isLocal = process.env.NODE_ENV !== 'production';
-
-const db = isLocal ?
-  new AWS.DynamoDB({
-    region: 'localhost',
-    endpoint: `http://localhost:${process.env.DYNAMODB_PORT}`,
-  }) :
-  new AWS.DynamoDB();
-
-const mapItem = item => (
-  {
-    id: item.id.S,
-    name: item.name.S,
-    createdUtc: item.createdUtc.S,
-  }
-);
-
-const mapData = data => (
-  {
-    id: data.Attributes.id.S,
-    name: data.Attributes.name.S,
-  }
-);
+import db from './db';
 
 const createResponse = (statusCode, body) => (
   {
     statusCode,
     headers: {
-      'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+      'Access-Control-Allow-Origin': '*', // Required for CORS
     },
     body: JSON.stringify(body),
   }
 );
 
-export const getItems = (event, context, callback) => {
+export const authorize = (event, context, callback) => {
+  console.log('authorize', JSON.stringify(event));
+
+  let error = null;
+  let policy = null;
+
+  const authHeader = event.authorizationToken ? event.authorizationToken.split(' ') : [];
+
+  if (authHeader.length === 2 && authHeader[0].toLowerCase() === 'bearer') {
+    try {
+      const decoded = jwt.verify(authHeader[1], process.env.AUTH0_CLIENT_SECRET);
+
+      policy = {
+        principalId: decoded.sub,
+      };
+    } catch (err) {
+      error = 'Unauthorized';
+    }
+  } else {
+    error = 'Unauthorized';
+  }
+
+  callback(error, policy);
+};
+
+export async function getItems(event, context, callback) {
   console.log('getItems', JSON.stringify(event));
 
-  const params = {
-    TableName: 'items',
-  };
-
   try {
-    db.scan(params, (err, data) => {
-      if (err) {
-        callback(createResponse(500, { message: err.message || 'Internal server error' }));
-      } else {
-        callback(null, createResponse(200, { items: data.Items.map(mapItem) }));
-      }
-    });
-  } catch (err) {
-    callback(createResponse(500, { message: err.message || 'Internal server error' }));
-  }
-};
+    const items = await db.getItems(event.requestContext.authorizer.principalId);
 
-export const getItem = (event, context, callback) => {
+    return callback(null, createResponse(200, items));
+  } catch (err) {
+    return callback(
+      null,
+      createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }),
+    );
+  }
+}
+
+export async function getItem(event, context, callback) {
   console.log('getItem', JSON.stringify(event));
 
-  const params = {
-    TableName: 'items',
-    Key: {
-      id: { S: event.pathParameters.id },
-    },
-  };
-
   try {
-    db.getItem(params, (err, data) => {
-      if (err) {
-        callback(createResponse(500, { message: err.message || 'Internal server error' }));
-      } else if (!data.Item) {
-        callback(
-          null,
-          createResponse(404, { message: `An item could not be found with id: ${event.pathParameters.id}` }),
-        );
-      } else {
-        callback(null, createResponse(200, mapItem(data.Item)));
-      }
-    });
-  } catch (err) {
-    callback(createResponse(500, { message: err.message || 'Internal server error' }));
-  }
-};
+    const item = await db.getItemById(event.requestContext.authorizer.principalId, event.pathParameters.id);
 
-export const createItem = (event, context, callback) => {
+    return callback(null, createResponse(200, item));
+  } catch (err) {
+    return callback(
+      null,
+      createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }),
+    );
+  }
+}
+
+export async function createItem(event, context, callback) {
   console.log('createItem', JSON.stringify(event));
 
-  const body = isLocal ? event.body : JSON.parse(event.body);
-
-  const params = {
-    Item: {
-      id: {
-        S: chance.guid(),
-      },
-      name: {
-        S: body.name,
-      },
-      createdUtc: {
-        S: moment().utc().toISOString(),
-      },
-    },
-    TableName: 'items',
-    ConditionExpression: 'attribute_not_exists(id)',
-  };
-
   try {
-    db.putItem(params, (err) => {
-      if (err) {
-        callback(createResponse(500, { message: err.message || 'Internal server error' }));
-      } else {
-        callback(null, createResponse(200, mapItem(params.Item)));
-      }
-    });
-  } catch (err) {
-    callback(createResponse(500, { message: err.message || 'Internal server error' }));
-  }
-};
+    const item = await db.createItem(event.requestContext.authorizer.principalId, JSON.parse(event.body).name);
 
-export const updateItem = (event, context, callback) => {
+    return callback(null, createResponse(201, item));
+  } catch (err) {
+    return callback(
+      null,
+      createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }),
+    );
+  }
+}
+
+export async function updateItem(event, context, callback) {
   console.log('updateItem', JSON.stringify(event));
 
-  const body = isLocal ? event.body : JSON.parse(event.body);
-
-  const params = {
-    TableName: 'items',
-    Key: {
-      id: { S: event.pathParameters.id },
-    },
-    AttributeUpdates: {
-      name: {
-        Action: 'PUT',
-        Value: { S: body.name },
-      },
-    },
-    ReturnValues: 'ALL_NEW',
-  };
-
   try {
-    db.updateItem(params, (err, data) => {
-      if (err) {
-        callback(createResponse(500, { message: err.message || 'Internal server error' }));
-      } else {
-        callback(null, createResponse(200, mapData(data)));
-      }
-    });
-  } catch (err) {
-    callback(createResponse(500, { message: err.message || 'Internal server error' }));
-  }
-};
+    await db.updateItem(
+      event.requestContext.authorizer.principalId,
+      event.pathParameters.id,
+      JSON.parse(event.body).name,
+    );
 
-export const deleteItem = (event, context, callback) => {
+    return callback(null, createResponse(200));
+  } catch (err) {
+    return callback(
+      null,
+      createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }),
+    );
+  }
+}
+
+export async function deleteItem(event, context, callback) {
   console.log('deleteItem', JSON.stringify(event));
 
-  const params = {
-    TableName: 'items',
-    Key: {
-      id: { S: event.pathParameters.id },
-    },
-  };
-
   try {
-    db.deleteItem(params, (err) => {
-      if (err) {
-        callback(createResponse(500, { message: err.message || 'Internal server error' }));
-      } else {
-        callback(null, createResponse(200));
-      }
-    });
+    await db.deleteItem(event.requestContext.authorizer.principalId, event.pathParameters.id);
+
+    return callback(null, createResponse(200));
   } catch (err) {
-    callback(createResponse(500, { message: err.message || 'Internal server error' }));
+    return callback(
+      null,
+      createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }),
+    );
   }
-};
+}
