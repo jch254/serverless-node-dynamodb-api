@@ -6,7 +6,7 @@ A simple API powered by Serverless, Node.js and DynamoDB, intended as a starting
 
 Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
-See [Apiary](http://docs.serverlessnodeapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
+See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
 
 ## Technologies Used
 
