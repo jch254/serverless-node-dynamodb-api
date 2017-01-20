@@ -25,6 +25,18 @@ export const authorize = (event, context, callback) => {
       const decoded = jwt.verify(authHeader[1], process.env.AUTH0_CLIENT_SECRET);
 
       policy = {
+        policyDocument: {
+          Version: '2012-10-17',
+          Statement: [
+            {
+              Action: 'execute-api:Invoke',
+              Resource: [
+                event.methodArn,
+              ],
+              Effect: 'Allow',
+            },
+          ],
+        },
         principalId: decoded.sub,
       };
     } catch (err) {
