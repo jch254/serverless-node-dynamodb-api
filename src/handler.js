@@ -49,6 +49,7 @@ export const authorize = (event, context, callback) => {
   callback(error, policy);
 };
 
+// GET /items
 export async function getItems(event, context, callback) {
   console.log('getItems', JSON.stringify(event));
 
@@ -64,6 +65,7 @@ export async function getItems(event, context, callback) {
   }
 }
 
+// GET /items/{id}
 export async function getItem(event, context, callback) {
   console.log('getItem', JSON.stringify(event));
 
@@ -79,6 +81,7 @@ export async function getItem(event, context, callback) {
   }
 }
 
+// POST /items
 export async function createItem(event, context, callback) {
   console.log('createItem', JSON.stringify(event));
 
@@ -94,6 +97,7 @@ export async function createItem(event, context, callback) {
   }
 }
 
+// PATCH /items/{id}
 export async function updateItem(event, context, callback) {
   console.log('updateItem', JSON.stringify(event));
 
@@ -113,6 +117,7 @@ export async function updateItem(event, context, callback) {
   }
 }
 
+// DELETE /items/{id}
 export async function deleteItem(event, context, callback) {
   console.log('deleteItem', JSON.stringify(event));
 
