@@ -37,8 +37,8 @@ functions:
   authorize:
     handler: handler.authorize
 
-  getItems:
-    handler: handler.getItems
+  getAllItems:
+    handler: handler.getAllItems
     memory: 512
     timeout: 60
     events:

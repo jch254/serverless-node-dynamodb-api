@@ -29,25 +29,9 @@ Please note that Serverless must be installed globally before running any comman
 
 To run locally you must run two servers - DB and API.
 
-### DB
+Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great tooling for local Serverless development. To start a local server that will mimic AWS API Gateway, run the commands below. Both servers will fire up and code will be reloaded upon change so that every request to your local server will serve the latest code.
 
-Serverless-dynamodb-local provides a local DynamoDB server that can be used to aid local development.
-
-Requires Java Runtime Engine (JRE) version 6.x or newer.
-
-**DYNAMODB_PORT environment variable must be set before `serverless dynamodb start` command below.**
-
-E.g. `DYNAMODB_PORT=8001 serverless dynamodb start`
-
-```
-yarn install
-serverless dynamodb install
-serverless dynamodb start
-```
-
-### API
-
-Serverless-webpack and serverless-offline offer great tooling for local Serverless development. To start a local server that will mimic AWS API Gateway, run the commands below. Code will be reloaded upon change so that every request to your local server will serve the latest code.
+Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
 **DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline --location .webpack` command below.**
 
@@ -55,6 +39,7 @@ E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline --lo
 
 ```
 yarn install
+serverless dynamodb install
 serverless offline --location .webpack
 ```
 

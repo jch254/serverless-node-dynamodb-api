@@ -50,7 +50,7 @@ export const authorize = (event, context, callback) => {
 };
 
 // GET /items
-export async function getItems(event, context, callback) {
+export async function getAllItems(event, context, callback) {
   console.log('getItems', JSON.stringify(event));
 
   try {
