@@ -39,9 +39,9 @@ There is currently an issue that requires `serverless dynamodb start` to be run 
 
 E.g. `DYNAMODB_PORT=8001 serverless dynamodb start`
 
-**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline start --location .webpack` command below.**
+**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline --location .webpack` command below.**
 
-E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline start --location .webpack`
+E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline --location .webpack`
 
 ```
 yarn install
