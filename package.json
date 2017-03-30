@@ -21,7 +21,6 @@
     "eslint-config-airbnb-base": "^11.1.2",
     "eslint-loader": "^1.7.0",
     "eslint-plugin-import": "^2.2.0",
-    "json-loader": "^0.5.4",
     "serverless-dynamodb-local": "^0.2.20",
     "serverless-offline": "^3.13.1",
     "serverless-webpack": "https://github.com/elastic-coders/serverless-webpack/archive/master.tar.gz",

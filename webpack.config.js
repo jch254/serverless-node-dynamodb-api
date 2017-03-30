@@ -17,18 +17,14 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
       }
-    })
+    }),
+    new webpack.optimize.UglifyJsPlugin()
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.join(__dirname, 'src'),
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader',
         include: path.join(__dirname, 'src'),
       }
     ]

@@ -1,5 +1,16 @@
 {
-  presets: ["latest"],
+  presets: [
+    [
+      "latest",
+      {
+        "target": {
+          "node": "6.10"
+        },
+        "modules": false,
+        "loose": true
+      }
+    ],
+  ],
   plugins: [
     "transform-runtime",
     "transform-inline-environment-variables",
