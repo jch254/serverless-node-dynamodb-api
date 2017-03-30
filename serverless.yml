@@ -7,7 +7,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs6.10
   stage: prod
   region: ap-southeast-2
   iamRoleStatements:
@@ -29,9 +29,7 @@ custom:
     start:
       port: ${env:DYNAMODB_PORT}
       inMemory: true
-      migration: true
-    migration:
-      dir: ./migrations
+      migrate: true
 
 functions:
   authorize:

@@ -33,14 +33,14 @@ Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline --location .webpack` command below.**
+**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline start --location .webpack` command below.**
 
-E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline --location .webpack`
+E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline start --location .webpack`
 
 ```
 yarn install
 serverless dynamodb install
-serverless offline --location .webpack
+serverless offline start --location .webpack
 ```
 
 ## Testing

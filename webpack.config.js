@@ -20,15 +20,15 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: path.join(__dirname, 'src'),
       },
       {
         test: /\.json$/,
-        loader: 'json',
+        loader: 'json-loader',
         include: path.join(__dirname, 'src'),
       }
     ]
