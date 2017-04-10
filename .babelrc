@@ -1,5 +1,5 @@
 {
-  presets: [
+  "presets": [
     [
       "latest",
       {
@@ -11,7 +11,7 @@
       }
     ],
   ],
-  plugins: [
+  "plugins": [
     "transform-runtime",
     "transform-inline-environment-variables",
     "transform-class-properties",
