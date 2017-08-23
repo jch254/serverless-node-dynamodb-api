@@ -51,7 +51,7 @@ export async function getAllItemsHandler(event: Event, context: Context, callbac
   try {
     const items = await getItems(event.requestContext.authorizer.principalId);
 
-    return callback(undefined, new Response({ statusCode: 200, body: items }));
+    return callback(undefined, new Response({ statusCode: 200, body: { items } }));
   } catch (err) {
     console.log(err);
 
