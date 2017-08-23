@@ -34,6 +34,7 @@ export const authorizer = (event: CustomAuthorizerEvent, context: Context, callb
 
       callback(undefined, authResponse);
     } catch (err) {
+      console.log(err);
       callback(new Error('Unauthorized'), undefined);
     }
   } else {
