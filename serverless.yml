@@ -24,6 +24,7 @@ provider:
         - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
 
 custom:
+  webpack: ./webpack.config.ts
   webpackIncludeModules: true
   dynamodb:
     start:
@@ -32,11 +33,11 @@ custom:
       migrate: true
 
 functions:
-  authorize:
-    handler: handler.authorize
+  authorizer:
+    handler: src/index.authorizer
 
   getAllItems:
-    handler: handler.getAllItems
+    handler: src/index.getAllItemsHandler
     memory: 512
     timeout: 60
     events:
@@ -46,12 +47,12 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer:
-            name: authorize
+            name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
 
   getItem:
-    handler: handler.getItem
+    handler: src/index.getItemHandler
     memory: 512
     timeout: 60
     events:
@@ -61,12 +62,12 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer:
-            name: authorize
+            name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
 
   createItem:
-    handler: handler.createItem
+    handler: src/index.createItemHandler
     memory: 512
     timeout: 60
     events:
@@ -76,12 +77,12 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer:
-            name: authorize
+            name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
 
   updateItem:
-    handler: handler.updateItem
+    handler: src/index.updateItemHandler
     memory: 512
     timeout: 60
     events:
@@ -91,12 +92,12 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer:
-            name: authorize
+            name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
 
   deleteItem:
-    handler: handler.deleteItem
+    handler: src/index.deleteItemHandler
     memory: 512
     timeout: 60
     events:
@@ -106,7 +107,7 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer:
-            name: authorize
+            name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
 

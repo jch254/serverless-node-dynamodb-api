@@ -2,23 +2,23 @@
 
 [Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-node-dynamodb-api/addon/pipelines/home)
 
-A simple API powered by Serverless, Node.js and DynamoDB, intended as a starting point for Serverless APIs. This project uses serverless-webpack with Babel to compile handler functions written with the next level JavaScript, serverless-offline to run locally and serverless-dynamodb-local to run a local DynamoDB server. I've also created a [simple React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API.
+A simple API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. This project uses serverless-webpack with Babel to compile handler functions written with the next level JavaScript, serverless-offline to run locally and serverless-dynamodb-local to run a local DynamoDB server. I've also created a [simple React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API.
 
 Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
-See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in [apiary.apib](../master/apiary.apib).
+See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in [apiary.apib](./apiary.apib).
 
 ## Technologies Used
 
 * [Serverless](https://github.com/serverless/serverless)
+* [TypeScript](https://github.com/microsoft/typescript)
 * [Node.js](https://github.com/nodejs/node)
-* [DynamoDB](https://aws.amazon.com/dynamodb)
 * [Webpack](https://github.com/webpack/webpack)
+* [DynamoDB](https://aws.amazon.com/dynamodb)
 * [Serverless-offline](https://github.com/dherault/serverless-offline)
 * [Serverless-webpack](https://github.com/elastic-coders/serverless-webpack)
 * [Serverless-dynamodb-local](https://github.com/99xt/serverless-dynamodb-local)
 * [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-* [Babel](https://github.com/babel/babel)
 * [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 
 ---
@@ -33,21 +33,14 @@ Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-There is currently an issue that requires `serverless dynamodb start` to be run explicitly, previously `serverless offline --location .webpack` would also start the local DynamoDB server. Hopefully this will be resolved soon!
+**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline start` command below.**
 
-**DYNAMODB_PORT environment variable must be set before `serverless dynamodb start` command below.**
-
-E.g. `DYNAMODB_PORT=8001 serverless dynamodb start`
-
-**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline --location .webpack` command below.**
-
-E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline --location .webpack`
+E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline start`
 
 ```
 yarn install
 serverless dynamodb install
-serverless dynamodb start
-serverless offline --location .webpack
+serverless offline start
 ```
 
 ## Testing
@@ -67,6 +60,6 @@ yarn install
 serverless deploy
 ```
 
-Manual steps suck so this project uses Bitbucket Pipelines to automate the build and deployment to AWS - see [bitbucket-pipelines.yml](../master/bitbucket-pipelines.yml). AWS credentials are set using [Bitbucket Pipelines environment variables](https://confluence.atlassian.com/bitbucket/environment-variables-in-bitbucket-pipelines-794502608.html).
+Manual steps suck so this project uses Bitbucket Pipelines to automate the build and deployment to AWS - see [bitbucket-pipelines.yml](./bitbucket-pipelines.yml). AWS credentials are set using [Bitbucket Pipelines environment variables](https://confluence.atlassian.com/bitbucket/environment-variables-in-bitbucket-pipelines-794502608.html).
 
 I've created a [Docker-powered build/deployment environment for Serverless projects](https://github.com/jch254/docker-node-serverless) to use with Bitbucket Pipelines which is used by this project.
