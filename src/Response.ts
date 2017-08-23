@@ -11,11 +11,14 @@ export default class Response {
   statusCode: number;
   body?: string;
   headers: {
-    'Access-Control-Allow-Origin': '*', // Required for CORS
+    [name: string] : string,
   };
 
   constructor(args: ResponseArgs = defaultResponseArgs) {
     this.statusCode = args.statusCode;
+    this.headers = {
+      'Access-Control-Allow-Origin': '*', // Required for CORS
+    };
 
     if (args.body !== undefined) {
       this.body = JSON.stringify(args.body);
