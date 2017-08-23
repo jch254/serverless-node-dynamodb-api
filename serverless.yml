@@ -35,6 +35,8 @@ custom:
 functions:
   authorizer:
     handler: src/index.authorizer
+    environment:
+      AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
 
   getAllItems:
     handler: src/index.getAllItemsHandler
