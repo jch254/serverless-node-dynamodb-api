@@ -21,6 +21,7 @@
     "@types/uuid": "^3.4.1",
     "@types/webpack": "^3.0.10",
     "awesome-typescript-loader": "^3.2.3",
+    "serverless": "^1.21.0",
     "serverless-dynamodb-autoscaling": "^0.6.1",
     "serverless-dynamodb-local": "^0.2.25",
     "serverless-offline": "^3.15.3",

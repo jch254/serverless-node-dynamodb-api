@@ -2,9 +2,7 @@
 
 [Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-node-dynamodb-api/addon/pipelines/home)
 
-A simple API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. I've also created a [simple React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API.
-
-Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
+API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. I've also created a [React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API. Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
 See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in [apiary.apib](./apiary.apib).
 
@@ -22,8 +20,6 @@ See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in
 * [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 
 ---
-
-Please note that Serverless must be installed globally before running any commands below: `yarn global add serverless`.
 
 ## Running locally (with live-reloading and local DynamoDB server)
 
