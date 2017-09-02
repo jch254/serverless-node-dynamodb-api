@@ -33,7 +33,7 @@ module.exports = {
         include: path.join(__dirname, 'src'),
       },
       {
-        test: /\.(js|ts)$/,
+        test: /\.(ts)$/,
         include: path.join(__dirname, 'src'),
         use: [{
           loader: 'awesome-typescript-loader',
