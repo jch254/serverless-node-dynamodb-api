@@ -1114,10 +1114,6 @@ es6-weak-map@^2.0.1:
     es6-iterator "^2.0.1"
     es6-symbol "^3.1.1"
 
-escape-json-node@1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/escape-json-node/-/escape-json-node-1.0.8.tgz#db56cb150865ef4695dc07369820a50836671b6a"
-
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -2736,10 +2732,6 @@ sax@>=0.6.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
-semver@5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
-
 serverless-dynamodb-autoscaling@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/serverless-dynamodb-autoscaling/-/serverless-dynamodb-autoscaling-0.6.1.tgz#d31d16694e41dd6f09f5750394223fb8b9b99095"
@@ -2770,13 +2762,6 @@ serverless-offline@^3.15.3:
     jsonpath-plus "^0.16.0"
     lodash "^4.17.4"
     velocityjs "^0.9.3"
-
-serverless-plugin-custom-domain@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/serverless-plugin-custom-domain/-/serverless-plugin-custom-domain-1.1.1.tgz#f660f1948fcaf2c0f6391dcb1ae23e07d0bd68a0"
-  dependencies:
-    escape-json-node "1.0.8"
-    semver "5.3.0"
 
 serverless-webpack@^3.0.0-rc.2:
   version "3.0.0-rc.2"
