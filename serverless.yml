@@ -4,6 +4,8 @@ plugins:
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-dynamodb-autoscaling
+  - serverless-plugin-custom-domain
 
 provider:
   name: aws
@@ -24,6 +26,7 @@ provider:
         - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
 
 custom:
+  domain: sls-api.603.nu
   webpack: ./webpack.config.ts
   webpackIncludeModules: true
   dynamodb:
@@ -31,6 +34,18 @@ custom:
       port: ${env:DYNAMODB_PORT}
       inMemory: true
       migrate: true
+  capacities:
+    - table: ItemsTable
+      index:
+        - userId-index
+      read:
+        minimum: 1
+        maximum: 10
+        usage: 0.1
+      write:
+        minimum: 1
+        maximum: 10
+        usage: 0.1
 
 functions:
   authorizer:

@@ -9,7 +9,7 @@
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.102.0",
+    "aws-sdk": "^2.108.0",
     "jsonwebtoken": "^7.4.3",
     "moment": "^2.18.1",
     "uuid": "^3.1.0"
@@ -17,19 +17,21 @@
   "devDependencies": {
     "@types/aws-lambda": "^0.0.16",
     "@types/jsonwebtoken": "^7.2.3",
-    "@types/node": "^8.0.24",
+    "@types/node": "^8.0.26",
     "@types/uuid": "^3.4.1",
     "@types/webpack": "^3.0.10",
     "awesome-typescript-loader": "^3.2.3",
+    "serverless-dynamodb-autoscaling": "^0.6.1",
     "serverless-dynamodb-local": "^0.2.25",
     "serverless-offline": "^3.15.3",
-    "serverless-webpack": "3.0.0-rc.2",
+    "serverless-plugin-custom-domain": "^1.1.1",
+    "serverless-webpack": "^3.0.0-rc.2",
     "source-map-loader": "^0.2.1",
-    "tslint": "^5.6.0",
+    "tslint": "^5.7.0",
     "tslint-config-airbnb": "^5.2.1",
     "tslint-loader": "^3.5.3",
-    "tsutils": "^2.8.0",
-    "typescript": "^2.4.2",
+    "tsutils": "^2.8.2",
+    "typescript": "^2.5.2",
     "webpack": "^3.5.5",
     "webpack-node-externals": "^1.6.0"
   }
