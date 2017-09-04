@@ -18,13 +18,13 @@ resource "aws_api_gateway_domain_name" "domain" {
 }
 
 resource "aws_route53_record" "domain" {
-  zone_id = "${var.route_53_zone_id}"
+  zone_id = "${var.route53_zone_id}"
   name = "${aws_api_gateway_domain_name.domain.domain_name}"
   type = "A"
 
   alias {
-    name = "${aws_api_gateway_domain_name.example.cloudfront_domain_name}"
-    zone_id = "${aws_api_gateway_domain_name.example.cloudfront_zone_id}"
+    name = "${aws_api_gateway_domain_name.domain.cloudfront_domain_name}"
+    zone_id = "${aws_api_gateway_domain_name.domain.cloudfront_zone_id}"
     evaluate_target_health = false
   }
 }
