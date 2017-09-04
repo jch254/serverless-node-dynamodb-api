@@ -4,7 +4,8 @@
   "description": "Serverless, Node and DynamoDB-powered API",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "tslint --type-check --project tsconfig.json || exit 0"
+    "lint": "tslint --type-check --project tsconfig.json || exit 0",
+    "deploy": "cross-env NODE_ENV=production serverless deploy"    
   },
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "@types/uuid": "^3.4.1",
     "@types/webpack": "^3.0.10",
     "awesome-typescript-loader": "^3.2.3",
+    "cross-env": "^5.0.5",
     "serverless": "^1.21.0",
     "serverless-dynamodb-autoscaling": "^0.6.1",
     "serverless-dynamodb-local": "^0.2.25",
