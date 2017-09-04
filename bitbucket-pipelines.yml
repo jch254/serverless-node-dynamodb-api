@@ -1,9 +1,9 @@
-image: jch254/docker-node-serverless:latest
+image: jch254/docker-node-terraform-aws:6.10.0
 pipelines:
   branches:
     master:
       - step:
           script:
-            - yarn install --ignore-engines
-            - export NODE_ENV=production
-            - serverless deploy
+            - ./infrastructure/install.bash
+            - ./infrastructure/deploy-infrastructure.bash
+            - ./infrastructure/deploy-serverless.bash
