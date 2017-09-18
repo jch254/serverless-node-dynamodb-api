@@ -25,6 +25,9 @@ provider:
       Resource:
         - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
 
+package:
+  individually: true
+
 custom:
   domain: sls-api.603.nu
   webpack: ./webpack.config.ts

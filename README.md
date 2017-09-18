@@ -29,14 +29,13 @@ Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `serverless offline start` command below.**
+**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `yarn run dev` command below.**
 
-E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET serverless offline start`
+E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run dev`
 
 ```
-yarn install
-serverless dynamodb install
-serverless offline start
+yarn install (serverless dynamodb install included as postinstall script)
+yarn run dev
 ```
 
 ## Testing
@@ -53,7 +52,7 @@ E.g. `NODE_ENV=production AUTH0_CLIENT_SECRET=YOUR_SECRET serverless deploy`
 
 ```
 yarn install
-serverless deploy
+yarn run deploy
 ```
 
 Manual steps suck so this project uses Bitbucket Pipelines to automate the build and deployment to AWS - see [bitbucket-pipelines.yml](./bitbucket-pipelines.yml). AWS credentials are set using [Bitbucket Pipelines environment variables](https://confluence.atlassian.com/bitbucket/environment-variables-in-bitbucket-pipelines-794502608.html).

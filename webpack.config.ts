@@ -1,12 +1,11 @@
 import path = require('path');
+import slsw = require('serverless-webpack');
 import webpack = require('webpack');
 import nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   devtool: 'cheap-module-source-map',
-  entry: [
-    path.join(__dirname, 'src', 'index.ts'),
-  ],
+  entry: slsw.lib.entries,
   output: {
     libraryTarget: 'commonjs',
     path: path.join(__dirname, '.webpack'),
