@@ -1,9 +1,0 @@
-image: jch254/docker-node-terraform-aws:6.10.0
-pipelines:
-  branches:
-    master:
-      - step:
-          script:
-            - ./infrastructure/install.bash
-            - ./infrastructure/deploy-infrastructure.bash
-            - ./infrastructure/deploy-serverless.bash

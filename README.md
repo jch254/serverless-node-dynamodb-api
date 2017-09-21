@@ -1,6 +1,4 @@
-# [Serverless-node-dynamodb-api (Live Demo)](https://serverless-api.603.nu)
-
-[Bitbucket Pipelines status](https://bitbucket.org/jch254/serverless-node-dynamodb-api/addon/pipelines/home)
+# [Serverless-node-dynamodb-api](https://serverless-api.603.nu)
 
 API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. I've also created a [React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API. Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
@@ -17,7 +15,6 @@ See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in
 * [Serverless-webpack](https://github.com/elastic-coders/serverless-webpack)
 * [Serverless-dynamodb-local](https://github.com/99xt/serverless-dynamodb-local)
 * [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-* [Bitbucket Pipelines](https://bitbucket.org/product/features/pipelines)
 
 ---
 
@@ -42,17 +39,6 @@ yarn run dev
 
 TBC
 
-## Deploying to AWS
+### Deployment/Infrastructure
 
-To deploy/manage this service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/providers/aws/guide/credentials.md) for further info. After you have done this, run the commands below to deploy the service:
-
-**NODE_ENV and AUTH0_CLIENT_SECRET environment variables must be set to production before `serverless deploy` command below.**
-
-E.g. `NODE_ENV=production AUTH0_CLIENT_SECRET=YOUR_SECRET serverless deploy`
-
-```
-yarn install
-yarn run deploy
-```
-
-Manual steps suck so this project uses Bitbucket Pipelines to automate the build and deployment to AWS - see [bitbucket-pipelines.yml](./bitbucket-pipelines.yml). AWS credentials are set using [Bitbucket Pipelines environment variables](https://confluence.atlassian.com/bitbucket/environment-variables-in-bitbucket-pipelines-794502608.html). I've created Docker-powered build/deployment environments for [Serverless projects](https://github.com/jch254/docker-node-serverless) and [Node projects](https://github.com/jch254/docker-node-terraform-aws) to use with AWS CodeBuild and Bitbucket Pipelines.
+Refer to the [/infrastructure](./infrastructure) directory.
