@@ -29,7 +29,7 @@ package:
   individually: true
 
 custom:
-  domain: sls-api.603.nu
+  domain: sls-api.603.nz
   webpack: ./webpack.config.ts
   webpackIncludeModules: true
   dynamodb:

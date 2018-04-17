@@ -1,4 +1,4 @@
-# [Serverless-node-dynamodb-api](https://serverless-api.603.nu)
+# [Serverless-node-dynamodb-api](https://serverless-api.603.nz)
 
 API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. I've also created a [React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API. Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
