@@ -1,6 +1,6 @@
 # Deployment/Infrastructure
 
-This project is built, tested and deployed to AWS by [codebuild-github-webhook](https://github.com/jch254/codebuild-github-webhook) and CodeBuild. There are two components to deploy - the Serverless service and all supporting infrastructure which is defined with Terraform (CodeBuild, Route53, CloudFront etc.).
+This project is built, tested and deployed to AWS by CodeBuild. There are two components to deploy - the Serverless service and all supporting infrastructure which is defined with Terraform (CodeBuild, Route53, CloudFront etc.).
 
 I've created Docker-powered build/deployment environments for [Serverless projects](https://github.com/jch254/docker-node-serverless) and [Node projects](https://github.com/jch254/docker-node-terraform-aws) to use with AWS CodeBuild and Bitbucket Pipelines.
 

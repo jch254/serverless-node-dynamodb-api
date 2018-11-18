@@ -24,7 +24,7 @@ variable "build_docker_tag" {
 
 variable "source_type" {
   description = "Type of repository that contains the source code to be built. Valid values for this parameter are: CODECOMMIT, CODEPIPELINE, GITHUB or S3."
-  default = "GITHUB"
+  default     = "GITHUB"
 }
 
 variable "buildspec" {
