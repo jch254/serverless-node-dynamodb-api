@@ -11,6 +11,7 @@ env:
     TF_VAR_build_docker_tag: "6.10.0"
     TF_VAR_buildspec: "buildspec.yml"
     TF_VAR_source_location: "https://github.com/jch254/serverless-node-dynamodb-api.git"
+    TF_VAR_cache_bucket: "603-codebuild-cache/serverless-node-dynamodb-api"
     TF_VAR_dns_name: "sls-api.603.nz"
     TF_VAR_route53_zone_id: "Z18NTUPI1RKRGC"
     TF_VAR_acm_arn: "arn:aws:acm:us-east-1:982898479788:certificate/65811194-cc89-4926-83c3-199c5c0b6e0c"
@@ -29,3 +30,9 @@ phases:
     commands:
       - ./infrastructure/deploy-infrastructure.bash
       - ./infrastructure/deploy-serverless.bash
+
+cache:
+   paths:
+     - 'infrastructure/.terraform/modules/**/*'
+     - 'infrastructure/.terraform/plugins/**/*'
+     - '/usr/local/share/.cache/yarn/v1/**/*'

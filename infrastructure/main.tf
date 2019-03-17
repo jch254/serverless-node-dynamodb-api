@@ -49,7 +49,7 @@ resource "aws_codebuild_webhook" "codebuild_webhook" {
 }
 
 module "codebuild_project" {
-  source = "github.com/jch254/terraform-modules//codebuild-project?ref=1.0.0"
+  source = "github.com/jch254/terraform-modules//codebuild-project?ref=1.0.4"
 
   name               = "${var.name}"
   codebuild_role_arn = "${aws_iam_role.codebuild_role.arn}"
@@ -58,6 +58,7 @@ module "codebuild_project" {
   source_type        = "${var.source_type}"
   buildspec          = "${var.buildspec}"
   source_location    = "${var.source_location}"
+  cache_bucket       = "${var.cache_bucket}"
 }
 
 resource "aws_api_gateway_domain_name" "domain" {
