@@ -9,7 +9,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs10.x
   stage: prod
   region: ap-southeast-2
   iamRoleStatements:
