@@ -11,7 +11,7 @@ export default class Response {
   statusCode: number;
   body?: string;
   headers: {
-    [name: string] : string,
+    [name: string]: string,
   };
 
   constructor(args: ResponseArgs = defaultResponseArgs) {
@@ -25,4 +25,3 @@ export default class Response {
     }
   }
 }
-

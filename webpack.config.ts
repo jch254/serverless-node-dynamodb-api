@@ -1,9 +1,13 @@
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path = require('path');
 import slsw = require('serverless-webpack');
-import webpack = require('webpack');
 import nodeExternals = require('webpack-node-externals');
 
+const srcPath = path.join(__dirname, 'src');
+const nodeModulesPath = path.join(__dirname, 'node_modules');
+
 module.exports = {
+  mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   devtool: 'cheap-module-source-map',
   entry: slsw.lib.entries,
   output: {
@@ -11,40 +15,39 @@ module.exports = {
     path: path.join(__dirname, '.webpack'),
     filename: 'src/index.js',
   },
-  target: 'node',
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      tslint: true,
+      async: false,
+      silent: true,
+    }),
   ],
+  target: 'node',
   resolve: {
     extensions: ['.ts', '.js', '.json'],
     modules: [
-      path.join(__dirname, 'src'),
-      path.join(__dirname, 'node_modules'),
+      srcPath,
+      nodeModulesPath,
     ],
   },
   externals: ['aws-sdk', nodeExternals()],
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        enforce: 'pre',
-        use: ['tslint-loader'],
-        include: path.join(__dirname, 'src'),
-      },
-      {
         test: /\.(ts)$/,
-        include: path.join(__dirname, 'src'),
+        include: srcPath,
         use: [{
-          loader: 'awesome-typescript-loader',
+          loader: 'ts-loader',
           options: {
-            silent: true,
+            transpileOnly: true,
+            experimentalWatchApi: true,
           },
         }],
       },
       {
         test: /\.js$/,
         use: ['source-map-loader'],
-        include: path.join(__dirname, 'src'),
+        include: srcPath,
         enforce: 'pre',
       },
     ],

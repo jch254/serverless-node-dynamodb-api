@@ -22,18 +22,36 @@ See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in
 
 To run locally you must run two servers - DB and API.
 
-Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great tooling for local Serverless development. To start a local server that will mimic AWS API Gateway, run the commands below. Both servers will fire up and code will be reloaded upon change so that every request to your local server will serve the latest code.
+Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great tooling for local Serverless development. To start local servers that mimic AWS API Gateway and DyanamoDB, run the commands below. Both servers will fire up and code will be reloaded upon change so that every request to your API will serve the latest code.
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-**DYNAMODB_PORT and AUTH0_CLIENT_SECRET environment variables must be set before `yarn run dev` command below.**
+**AUTH0_CLIENT_SECRET environment variable must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
 
-E.g. `DYNAMODB_PORT=8001 AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run dev`
+E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run dev`
 
 ```
 yarn install (serverless dynamodb install included as postinstall script)
 yarn run dev
 ```
+
+Submit requests to http://localhost:3000. The DynamoDB shell console is available at http://localhost:8000/shell.
+
+## Running locally with Docker
+
+Maintaining a Java installation for the sake of running DynamoDB locally is a pain, running in a Docker container is far easier. As above, to run locally you must run two servers - DB and API.
+
+To start the local servers that mimic AWS API Gateway and DyanamoDB using docker, run the commands below.
+
+**AUTH0_CLIENT_SECRET environment variable must be set before `docker-compose up --build` command below.**
+
+E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET docker-compose up --build`
+
+```
+docker-compose up --build
+```
+
+Submit requests to http://localhost:3000. The DynamoDB shell console is available at http://localhost:8000/shell.
 
 ## Testing
 

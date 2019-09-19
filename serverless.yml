@@ -30,13 +30,17 @@ package:
 
 custom:
   domain: sls-api.603.nz
-  webpack: ./webpack.config.ts
-  webpackIncludeModules: true
+  webpack:
+    webpackConfig: ./webpack.config.ts
+    includeModules: true
   dynamodb:
     start:
-      port: ${env:DYNAMODB_PORT}
-      inMemory: true
+      port: ${env:DYNAMODB_PORT, 8000}
+      host: ${env:DYNAMODB_HOST, localhost}
       migrate: true
+      noStart: ${env:DYNAMODB_NO_START, false}
+    stages:
+      - ${self:provider.stage}
   capacities:
     - table: ItemsTable
       index:
@@ -51,6 +55,17 @@ custom:
         usage: 0.1
 
 functions:
+  ping:
+    handler: src/index.pingHandler
+    memory: 512
+    timeout: 60
+    events:
+      - http:
+          method: get
+          path: ping
+          cors: true
+          integration: lambda-proxy
+
   authorizer:
     handler: src/index.authorizer
     environment:

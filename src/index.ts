@@ -1,9 +1,24 @@
-import { AuthResponse, Callback, Context, CustomAuthorizerEvent } from 'aws-lambda';
+import { AuthResponse, AuthResponseContext, APIGatewayEvent, Callback, Context, CustomAuthorizerEvent } from 'aws-lambda';
 import * as jwt from 'jsonwebtoken';
-
 import { createItem, deleteItem, getItems, getItemById, updateItem } from './database';
-import Event from './Event';
 import Response from './Response';
+
+export async function pingHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+  console.log('pingHandler');
+  console.log('event', JSON.stringify(event));
+  console.log('context', JSON.stringify(context));
+
+  try {
+    return callback(undefined, new Response({ statusCode: 200, body: { message: 'Chur' } }));
+  } catch (err) {
+    console.log(err);
+
+    return callback(
+      undefined,
+      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
+    );
+  }
+}
 
 export const authorizer = (event: CustomAuthorizerEvent, context: Context, callback: Callback) => {
   console.log('authorizer');
@@ -43,13 +58,13 @@ export const authorizer = (event: CustomAuthorizerEvent, context: Context, callb
 };
 
 // GET /items
-export async function getAllItemsHandler(event: Event, context: Context, callback: Callback) {
+export async function getAllItemsHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
   console.log('getAllItemsHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
-    const items = await getItems(event.requestContext.authorizer.principalId);
+    const items = await getItems((event.requestContext.authorizer as AuthResponseContext).principalId);
 
     return callback(undefined, new Response({ statusCode: 200, body: { items } }));
   } catch (err) {
@@ -63,13 +78,16 @@ export async function getAllItemsHandler(event: Event, context: Context, callbac
 }
 
 // GET /items/{id}
-export async function getItemHandler(event: Event, context: Context, callback: Callback) {
+export async function getItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
   console.log('getItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
-    const item = await getItemById(event.requestContext.authorizer.principalId, event.pathParameters !== null ? event.pathParameters.id : '');
+    const item = await getItemById(
+      (event.requestContext.authorizer as AuthResponseContext).principalId,
+      event.pathParameters !== null ? event.pathParameters.id : '',
+    );
 
     return callback(undefined, new Response({ statusCode: 200, body: item }));
   } catch (err) {
@@ -81,18 +99,18 @@ export async function getItemHandler(event: Event, context: Context, callback: C
 }
 
 // POST /items
-export async function createItemHandler(event: Event, context: Context, callback: Callback) {
+export async function createItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
   console.log('createItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
-    const item = await createItem(event.requestContext.authorizer.principalId, JSON.parse(event.body as string).name);
+    const item = await createItem((event.requestContext.authorizer as AuthResponseContext).principalId, JSON.parse(event.body as string).name);
 
     return callback(undefined, new Response({ statusCode: 201, body: item }));
   } catch (err) {
     console.log(err);
-    
+
     return callback(
       undefined,
       new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
@@ -101,14 +119,14 @@ export async function createItemHandler(event: Event, context: Context, callback
 }
 
 // PATCH /items/{id}
-export async function updateItemHandler(event: Event, context: Context, callback: Callback) {
+export async function updateItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
   console.log('updateItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
     await updateItem(
-      event.requestContext.authorizer.principalId,
+      (event.requestContext.authorizer as AuthResponseContext).principalId,
       event.pathParameters !== null ? event.pathParameters.id : '',
       JSON.parse(event.body as string).name,
     );
@@ -116,7 +134,7 @@ export async function updateItemHandler(event: Event, context: Context, callback
     return callback(undefined, new Response({ statusCode: 200 }));
   } catch (err) {
     console.log(err);
-    
+
     return callback(
       undefined,
       new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
@@ -125,18 +143,18 @@ export async function updateItemHandler(event: Event, context: Context, callback
 }
 
 // DELETE /items/{id}
-export async function deleteItemHandler(event: Event, context: Context, callback: Callback) {
+export async function deleteItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
   console.log('deleteItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
-    await deleteItem(event.requestContext.authorizer.principalId, event.pathParameters !== null ? event.pathParameters.id : '');
+    await deleteItem((event.requestContext.authorizer as AuthResponseContext).principalId, event.pathParameters !== null ? event.pathParameters.id : '');
 
     return callback(undefined, new Response({ statusCode: 200 }));
   } catch (err) {
     console.log(err);
-    
+
     return callback(
       undefined,
       new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),

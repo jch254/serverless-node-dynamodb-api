@@ -8,7 +8,9 @@ import ResponseError from './ResponseError';
 const db = process.env.IS_OFFLINE ?
   new DynamoDB.DocumentClient({
     region: 'localhost',
-    endpoint: `http://localhost:${process.env.DYNAMODB_PORT}`,
+    accessKeyId: 'MOCK_ACCESS_KEY_ID',
+    secretAccessKey: 'MOCK_SECRET_ACCESS_KEY',
+    endpoint: `http://${process.env.DYNAMODB_HOST || 'localhost'}:${process.env.DYNAMODB_PORT || 8000}`,
   }) :
   new DynamoDB.DocumentClient();
 
@@ -40,7 +42,7 @@ export async function getItemById(userId: string, itemId: string): Promise<Item>
 
   if (data.Item === undefined) {
     const notFoundError = new Error(`An item could not be found with id: ${itemId}`) as ResponseError;
-    
+
     notFoundError.responseStatusCode = 404;
 
     throw notFoundError;
