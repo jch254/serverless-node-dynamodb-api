@@ -15,6 +15,7 @@ See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in
 * [Serverless-webpack](https://github.com/elastic-coders/serverless-webpack)
 * [Serverless-dynamodb-local](https://github.com/99xt/serverless-dynamodb-local)
 * [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+* [Docker](https://www.docker.com)
 
 ---
 
