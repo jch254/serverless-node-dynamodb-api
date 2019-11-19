@@ -32,7 +32,10 @@ custom:
   domain: sls-api.603.nz
   webpack:
     webpackConfig: ./webpack.config.ts
-    includeModules: true
+    packager: 'yarn'
+    includeModules:
+      forceExclude:
+        - aws-sdk
   dynamodb:
     start:
       port: ${env:DYNAMODB_PORT, 8000}
