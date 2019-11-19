@@ -18,7 +18,8 @@
         "apigateway:*",
         "cloudformation:*",
         "lambda:*",
-        "ssm:DescribeParameters"
+        "ssm:DescribeParameters",
+        "dynamodb:*"
       ]
     },
     {
