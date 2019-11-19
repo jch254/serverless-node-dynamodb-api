@@ -18,6 +18,7 @@ export default class Response {
     this.statusCode = args.statusCode;
     this.headers = {
       'Access-Control-Allow-Origin': '*', // Required for CORS
+      'Access-Control-Allow-Credentials': 'true',
     };
 
     if (args.body !== undefined) {
