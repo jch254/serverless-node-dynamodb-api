@@ -60,6 +60,7 @@ module "codebuild_project" {
   buildspec          = var.buildspec
   source_location    = var.source_location
   cache_bucket       = var.cache_bucket
+  build_compute_type = var.build_compute_type
 }
 
 resource "aws_api_gateway_domain_name" "domain" {

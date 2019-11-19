@@ -40,6 +40,11 @@ variable "cache_bucket" {
   default     = ""
 }
 
+variable "build_compute_type" {
+  description = "CodeBuild compute type (e.g. BUILD_GENERAL1_SMALL)"
+  default     = ""
+}
+
 variable "dns_name" {
   description = "DNS name"
 }

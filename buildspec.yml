@@ -15,6 +15,7 @@ env:
     TF_VAR_dns_name: "sls-api.603.nz"
     TF_VAR_route53_zone_id: "Z18NTUPI1RKRGC"
     TF_VAR_acm_arn: "arn:aws:acm:us-east-1:982898479788:certificate/65811194-cc89-4926-83c3-199c5c0b6e0c"
+    TF_VAR_build_compute_type: "BUILD_GENERAL1_MEDIUM"
     REMOTE_STATE_BUCKET: "603-terraform-remote-state"
   parameter-store:
     AUTH0_CLIENT_SECRET: "/serverless-node-dynamodb-api/auth0-client-secret"
