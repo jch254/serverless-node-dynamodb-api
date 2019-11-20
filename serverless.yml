@@ -26,11 +26,6 @@ provider:
         - dynamodb:UpdateItem
       Resource:
         - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
-    - Effect: Allow
-      Action:
-        - lambda:InvokeFunction
-      Resource:
-        - "Fn::Join": ["", ["arn:aws:lambda:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":function:${self:service}-${self:provider.stage}-authorizer"]]
 
 package:
   individually: true
@@ -69,9 +64,16 @@ custom:
         usage: 0.1
 
 functions:
+  authorizer:
+    handler: src/index.authorizer
+    memory: 1024
+    timeout: 60
+    environment:
+      AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
+
   ping:
     handler: src/index.pingHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:
@@ -80,14 +82,9 @@ functions:
           cors: true
           integration: lambda-proxy
 
-  authorizer:
-    handler: src/index.authorizer
-    environment:
-      AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
-
   getAllItems:
     handler: src/index.getAllItemsHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:
@@ -102,7 +99,7 @@ functions:
 
   getItem:
     handler: src/index.getItemHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:
@@ -117,7 +114,7 @@ functions:
 
   createItem:
     handler: src/index.createItemHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:
@@ -132,7 +129,7 @@ functions:
 
   updateItem:
     handler: src/index.updateItemHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:
@@ -147,7 +144,7 @@ functions:
 
   deleteItem:
     handler: src/index.deleteItemHandler
-    memory: 512
+    memory: 1024
     timeout: 60
     events:
       - http:

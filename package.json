@@ -9,7 +9,9 @@
     "docker-dev": "cross-env NODE_ENV=development serverless offline start --host 0.0.0.0",
     "lint": "tslint --type-check --project tsconfig.json || exit 0",
     "create-domain": "cross-env NODE_ENV=production SLS_DEBUG=true serverless create_domain",
-    "deploy": "cross-env NODE_ENV=production SLS_DEBUG=true serverless deploy"
+    "deploy": "cross-env NODE_ENV=production SLS_DEBUG=true serverless deploy",
+    "delete-domain": "cross-env NODE_ENV=production SLS_DEBUG=true serverless delete_domain",
+    "package": "cross-env NODE_ENV=production SLS_DEBUG=true serverless package"
   },
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",
