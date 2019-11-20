@@ -5,7 +5,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-offline
   - serverless-dynamodb-autoscaling
-  - serverless-plugin-custom-domain
+  - serverless-domain-manager
 
 provider:
   name: aws
@@ -29,7 +29,11 @@ package:
   individually: true
 
 custom:
-  domain: sls-api.603.nz
+  customDomain:
+    domainName: sls-api.603.nz
+    stage: ${self:provider.stage}
+    certificateArn: ${env:TF_VAR_acm_arn}
+    hostedZoneId: ${env:TF_VAR_route53_zone_id}
   webpack:
     webpackConfig: ./webpack.config.ts
     packager: 'yarn'

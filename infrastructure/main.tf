@@ -44,11 +44,6 @@ resource "aws_iam_role_policy" "codebuild_policy" {
   policy = data.template_file.codebuild_policy.rendered
 }
 
-resource "aws_codebuild_webhook" "codebuild_webhook" {
-  project_name  = var.name
-  branch_filter = "master"
-}
-
 module "codebuild_project" {
   source = "github.com/jch254/terraform-modules//codebuild-project?ref=1.0.6"
 
@@ -63,19 +58,7 @@ module "codebuild_project" {
   build_compute_type = var.build_compute_type
 }
 
-resource "aws_api_gateway_domain_name" "domain" {
-  domain_name     = var.dns_name
-  certificate_arn = var.acm_arn
-}
-
-resource "aws_route53_record" "domain" {
-  zone_id = var.route53_zone_id
-  name    = aws_api_gateway_domain_name.domain.domain_name
-  type    = "A"
-
-  alias {
-    name                   = aws_api_gateway_domain_name.domain.cloudfront_domain_name
-    zone_id                = aws_api_gateway_domain_name.domain.cloudfront_zone_id
-    evaluate_target_health = false
-  }
+resource "aws_codebuild_webhook" "codebuild_webhook" {
+  project_name  = var.name
+  branch_filter = "master"
 }
