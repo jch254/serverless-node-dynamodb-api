@@ -67,7 +67,7 @@ functions:
   authorizer:
     handler: src/index.authorizer
     memory: 1024
-    timeout: 60
+    timeout: 30
     environment:
       AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
 
