@@ -1,10 +1,17 @@
 export interface ResponseArgs {
-  statusCode: number;
+  statusCode?: number;
   body?: any;
+  headers?: {
+    [name: string]: string,
+  };
 }
 
 export const defaultResponseArgs: ResponseArgs = {
   statusCode: 200,
+  headers: {
+    'Access-Control-Allow-Origin': '*', // Required for CORS
+    'Access-Control-Allow-Credentials': 'true',
+  },
 };
 
 export default class Response {
@@ -15,10 +22,10 @@ export default class Response {
   };
 
   constructor(args: ResponseArgs = defaultResponseArgs) {
-    this.statusCode = args.statusCode;
+    this.statusCode = args.statusCode ?? defaultResponseArgs.statusCode as number;
     this.headers = {
-      'Access-Control-Allow-Origin': '*', // Required for CORS
-      'Access-Control-Allow-Credentials': 'true',
+      ...defaultResponseArgs.headers,
+      ...(args.headers ?? {}),
     };
 
     if (args.body !== undefined) {

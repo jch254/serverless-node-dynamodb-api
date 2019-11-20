@@ -1,7 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
 import * as moment from 'moment';
 import * as uuidv4 from 'uuid/v4';
-
 import Item from './Item';
 import ResponseError from './ResponseError';
 
@@ -41,11 +40,7 @@ export async function getItemById(userId: string, itemId: string): Promise<Item>
   const data = await db.get(params).promise();
 
   if (data.Item === undefined) {
-    const notFoundError = new Error(`An item could not be found with id: ${itemId}`) as ResponseError;
-
-    notFoundError.responseStatusCode = 404;
-
-    throw notFoundError;
+    throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
   }
 
   return data.Item as Item;
@@ -87,16 +82,10 @@ export async function updateItem(userId: string, itemId: string, name: string): 
       },
     };
 
-    console.log(params);
-
     await db.update(params).promise();
   } catch (err) {
     if (err.code === 'ConditionalCheckFailedException') {
-      const notFoundError = new Error(`An item could not be found with id: ${itemId}`) as ResponseError;
-
-      notFoundError.responseStatusCode = 404;
-
-      throw notFoundError;
+      throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
     }
 
     throw err;
@@ -117,11 +106,7 @@ export async function deleteItem(userId: string, itemId: string): Promise<void> 
     await db.delete(params).promise();
   } catch (err) {
     if (err.code === 'ConditionalCheckFailedException') {
-      const notFoundError = new Error(`An item could not be found with id: ${itemId}`) as ResponseError;
-
-      notFoundError.responseStatusCode = 404;
-
-      throw notFoundError;
+      throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
     }
 
     throw err;
