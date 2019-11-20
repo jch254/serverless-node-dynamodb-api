@@ -25,10 +25,10 @@ export const authorizer = (event: CustomAuthorizerEvent, context: Context, callb
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
-  const authHeader = event.authorizationToken ? event.authorizationToken.split(' ') : [];
+  try {
+    const authHeader = event.authorizationToken ? event.authorizationToken.split(' ') : [];
 
-  if (authHeader.length === 2 && authHeader[0].toLowerCase() === 'bearer') {
-    try {
+    if (authHeader.length === 2 && authHeader[0].toLowerCase() === 'bearer') {
       const decoded = jwt.verify(authHeader[1], process.env.AUTH0_CLIENT_SECRET as string) as { sub: string };
 
       const authResponse: AuthResponse = {
@@ -48,12 +48,12 @@ export const authorizer = (event: CustomAuthorizerEvent, context: Context, callb
       };
 
       callback(undefined, authResponse);
-    } catch (err) {
-      console.log(err);
-      callback(new Error('Unauthorized'), undefined);
+    } else {
+      callback('Unauthorized', undefined);
     }
-  } else {
-    callback(new Error('Unauthorized'), undefined);
+  } catch (err) {
+    console.log(err);
+    callback('Unauthorized', undefined);
   }
 };
 
