@@ -71,14 +71,14 @@ functions:
     environment:
       AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
 
-  ping:
+  pingo:
     handler: src/index.pingHandler
     memory: 1024
     timeout: 60
     events:
       - http:
           method: get
-          path: ping
+          path: pingo
           cors: true
           integration: lambda-proxy
 
