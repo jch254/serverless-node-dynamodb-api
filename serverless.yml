@@ -12,6 +12,8 @@ provider:
   runtime: nodejs10.x
   stage: prod
   region: ap-southeast-2
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   iamRoleStatements:
     - Effect: Allow
       Action:
