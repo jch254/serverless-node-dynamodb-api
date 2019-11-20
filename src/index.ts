@@ -3,20 +3,17 @@ import * as jwt from 'jsonwebtoken';
 import { createItem, deleteItem, getItems, getItemById, updateItem } from './database';
 import Response from './Response';
 
-export async function pingHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function pingHandler(event: APIGatewayEvent, context: Context) {
   console.log('pingHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
 
   try {
-    return callback(undefined, new Response({ statusCode: 200, body: { message: 'Chur' } }));
+    return new Response({ statusCode: 200, body: { message: 'Chur' } });
   } catch (err) {
     console.log(err);
 
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
 
@@ -58,7 +55,7 @@ export const authorizer = (event: CustomAuthorizerEvent, context: Context, callb
 };
 
 // GET /items
-export async function getAllItemsHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function getAllItemsHandler(event: APIGatewayEvent, context: Context) {
   console.log('getAllItemsHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
@@ -66,19 +63,16 @@ export async function getAllItemsHandler(event: APIGatewayEvent, context: Contex
   try {
     const items = await getItems((event.requestContext.authorizer as AuthResponseContext).principalId);
 
-    return callback(undefined, new Response({ statusCode: 200, body: { items } }));
+    return new Response({ statusCode: 200, body: { items } });
   } catch (err) {
     console.log(err);
 
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
 
 // GET /items/{id}
-export async function getItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function getItemHandler(event: APIGatewayEvent, context: Context) {
   console.log('getItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
@@ -89,17 +83,16 @@ export async function getItemHandler(event: APIGatewayEvent, context: Context, c
       event.pathParameters !== null ? event.pathParameters.id : '',
     );
 
-    return callback(undefined, new Response({ statusCode: 200, body: item }));
+    return new Response({ statusCode: 200, body: item });
   } catch (err) {
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    console.log(err);
+
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
 
 // POST /items
-export async function createItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function createItemHandler(event: APIGatewayEvent, context: Context) {
   console.log('createItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
@@ -107,19 +100,16 @@ export async function createItemHandler(event: APIGatewayEvent, context: Context
   try {
     const item = await createItem((event.requestContext.authorizer as AuthResponseContext).principalId, JSON.parse(event.body as string).name);
 
-    return callback(undefined, new Response({ statusCode: 201, body: item }));
+    return new Response({ statusCode: 201, body: item });
   } catch (err) {
     console.log(err);
 
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
 
 // PATCH /items/{id}
-export async function updateItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function updateItemHandler(event: APIGatewayEvent, context: Context) {
   console.log('updateItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
@@ -131,19 +121,16 @@ export async function updateItemHandler(event: APIGatewayEvent, context: Context
       JSON.parse(event.body as string).name,
     );
 
-    return callback(undefined, new Response({ statusCode: 200 }));
+    return new Response({ statusCode: 200 });
   } catch (err) {
     console.log(err);
 
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
 
 // DELETE /items/{id}
-export async function deleteItemHandler(event: APIGatewayEvent, context: Context, callback: Callback) {
+export async function deleteItemHandler(event: APIGatewayEvent, context: Context) {
   console.log('deleteItemHandler');
   console.log('event', JSON.stringify(event));
   console.log('context', JSON.stringify(context));
@@ -151,13 +138,10 @@ export async function deleteItemHandler(event: APIGatewayEvent, context: Context
   try {
     await deleteItem((event.requestContext.authorizer as AuthResponseContext).principalId, event.pathParameters !== null ? event.pathParameters.id : '');
 
-    return callback(undefined, new Response({ statusCode: 200 }));
+    return new Response({ statusCode: 200 });
   } catch (err) {
     console.log(err);
 
-    return callback(
-      undefined,
-      new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } }),
-    );
+    throw new Response({ statusCode: err.responseStatusCode || 500, body: { message: err.message || 'Internal server error' } });
   }
 }
