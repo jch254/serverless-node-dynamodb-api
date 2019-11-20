@@ -74,7 +74,7 @@ functions:
   pingo:
     handler: src/index.pingHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: get
@@ -85,7 +85,7 @@ functions:
   getAllItems:
     handler: src/index.getAllItemsHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: get
@@ -100,7 +100,7 @@ functions:
   getItem:
     handler: src/index.getItemHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: get
@@ -115,7 +115,7 @@ functions:
   createItem:
     handler: src/index.createItemHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: post
@@ -130,7 +130,7 @@ functions:
   updateItem:
     handler: src/index.updateItemHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: patch
@@ -145,7 +145,7 @@ functions:
   deleteItem:
     handler: src/index.deleteItemHandler
     memory: 1024
-    timeout: 60
+    timeout: 30
     events:
       - http:
           method: delete
