@@ -14,6 +14,7 @@ E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run deploy`
 
 ```
 yarn install
+yarn run create-domain
 yarn run deploy
 ```
 
