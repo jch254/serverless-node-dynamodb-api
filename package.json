@@ -16,7 +16,7 @@
   "author": "Jordan Hornblow <jordan@jch254.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.584.0",
+    "aws-sdk": "^2.814.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "uuid": "^3.3.3"
