@@ -2,7 +2,7 @@ export interface ResponseArgs {
   statusCode?: number;
   body?: any;
   headers?: {
-    [name: string]: string,
+    [name: string]: string;
   };
 }
 
@@ -18,11 +18,12 @@ export default class Response {
   statusCode: number;
   body?: string;
   headers: {
-    [name: string]: string,
+    [name: string]: string;
   };
 
   constructor(args: ResponseArgs = defaultResponseArgs) {
-    this.statusCode = args.statusCode ?? defaultResponseArgs.statusCode as number;
+    this.statusCode =
+      args.statusCode ?? (defaultResponseArgs.statusCode as number);
     this.headers = {
       ...defaultResponseArgs.headers,
       ...(args.headers ?? {}),

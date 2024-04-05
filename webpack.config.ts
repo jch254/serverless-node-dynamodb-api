@@ -1,4 +1,4 @@
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path = require('path');
 import slsw = require('serverless-webpack');
 import nodeExternals = require('webpack-node-externals');
@@ -17,18 +17,13 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      tslint: true,
       async: false,
-      silent: true,
     }),
   ],
   target: 'node',
   resolve: {
     extensions: ['.ts', '.js', '.json'],
-    modules: [
-      srcPath,
-      nodeModulesPath,
-    ],
+    modules: [srcPath, nodeModulesPath],
   },
   externals: ['aws-sdk', nodeExternals()],
   module: {
@@ -36,13 +31,15 @@ module.exports = {
       {
         test: /\.(ts)$/,
         include: srcPath,
-        use: [{
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: true,
-            experimentalWatchApi: true,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: true,
+            },
           },
-        }],
+        ],
       },
       {
         test: /\.js$/,

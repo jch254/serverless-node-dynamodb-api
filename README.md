@@ -8,17 +8,17 @@ See [Apiary](http://docs.serverlessapi.apiary.io) for API structure - defined in
 
 ## Technologies Used
 
-* [Serverless](https://github.com/serverless/serverless)
-* [TypeScript](https://github.com/microsoft/typescript)
-* [Node.js](https://github.com/nodejs/node)
-* [Webpack](https://github.com/webpack/webpack)
-* [DynamoDB](https://aws.amazon.com/dynamodb)
-* [Serverless-offline](https://github.com/dherault/serverless-offline)
-* [Serverless-webpack](https://github.com/elastic-coders/serverless-webpack)
-* [Serverless-dynamodb-local](https://github.com/99xt/serverless-dynamodb-local)
-* [Serverless-domain-manager](https://github.com/amplify-education/serverless-domain-manager)
-* [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-* [Docker](https://www.docker.com)
+- [Serverless](https://github.com/serverless/serverless)
+- [TypeScript](https://github.com/microsoft/typescript)
+- [Node.js](https://github.com/nodejs/node)
+- [Webpack](https://github.com/webpack/webpack)
+- [DynamoDB](https://aws.amazon.com/dynamodb)
+- [Serverless-offline](https://github.com/dherault/serverless-offline)
+- [Serverless-webpack](https://github.com/elastic-coders/serverless-webpack)
+- [Serverless-dynamodb](https://github.com/raisenational/serverless-dynamodb)
+- [Serverless-domain-manager](https://github.com/amplify-education/serverless-domain-manager)
+- [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+- [Docker](https://www.docker.com)
 
 ---
 

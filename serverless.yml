@@ -2,14 +2,15 @@ service: serverless-node-dynamodb-api
 
 plugins:
   - serverless-webpack
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-offline
   - serverless-dynamodb-autoscaling
   - serverless-domain-manager
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs20.x
+  memorySize: 1024
   stage: prod
   region: ap-southeast-2
   iamManagedPolicies:
@@ -38,14 +39,14 @@ custom:
     hostedZoneId: ${env:TF_VAR_route53_zone_id}
   webpack:
     webpackConfig: ./webpack.config.ts
-    packager: 'yarn'
+    packager: "yarn"
     includeModules:
       forceExclude:
         - aws-sdk
-  dynamodb:
+  serverless-dynamodb:
     start:
       port: ${env:DYNAMODB_PORT, 8000}
-      host: ${env:DYNAMODB_HOST, localhost}
+      host: ${env:DYNAMODB_HOST, "localhost"}
       migrate: true
       noStart: ${env:DYNAMODB_NO_START, false}
     stages:
@@ -66,14 +67,12 @@ custom:
 functions:
   authorizer:
     handler: src/index.authorizer
-    memory: 1024
     timeout: 30
     environment:
       AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
 
   pingo:
     handler: src/index.pingHandler
-    memory: 1024
     timeout: 30
     events:
       - http:
@@ -84,7 +83,6 @@ functions:
 
   getAllItems:
     handler: src/index.getAllItemsHandler
-    memory: 1024
     timeout: 30
     events:
       - http:
@@ -99,7 +97,6 @@ functions:
 
   getItem:
     handler: src/index.getItemHandler
-    memory: 1024
     timeout: 30
     events:
       - http:
@@ -114,7 +111,6 @@ functions:
 
   createItem:
     handler: src/index.createItemHandler
-    memory: 1024
     timeout: 30
     events:
       - http:
@@ -129,7 +125,6 @@ functions:
 
   updateItem:
     handler: src/index.updateItemHandler
-    memory: 1024
     timeout: 30
     events:
       - http:
@@ -144,7 +139,6 @@ functions:
 
   deleteItem:
     handler: src/index.deleteItemHandler
-    memory: 1024
     timeout: 30
     events:
       - http:

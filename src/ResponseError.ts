@@ -14,7 +14,8 @@ export default class ResponseError extends Error {
 
   constructor(args: ResponseErrorArgs = defaultResponseErrorArgs) {
     super(args.message ?? defaultResponseErrorArgs.message);
-    this.statusCode = args.statusCode ?? defaultResponseErrorArgs.statusCode as number;
-    this.message = args.message ?? defaultResponseErrorArgs.message as string;
+    this.statusCode =
+      args.statusCode ?? (defaultResponseErrorArgs.statusCode as number);
+    this.message = args.message ?? (defaultResponseErrorArgs.message as string);
   }
 }

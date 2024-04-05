@@ -1,17 +1,19 @@
 import { DynamoDB } from 'aws-sdk';
-import * as moment from 'moment';
-import * as uuidv4 from 'uuid/v4';
+import moment from 'moment';
+import { v4 } from 'uuid';
 import Item from './Item';
 import ResponseError from './ResponseError';
 
-const db = process.env.IS_OFFLINE ?
-  new DynamoDB.DocumentClient({
-    region: 'localhost',
-    accessKeyId: 'MOCK_ACCESS_KEY_ID',
-    secretAccessKey: 'MOCK_SECRET_ACCESS_KEY',
-    endpoint: `http://${process.env.DYNAMODB_HOST || 'localhost'}:${process.env.DYNAMODB_PORT || 8000}`,
-  }) :
-  new DynamoDB.DocumentClient();
+const db = process.env.IS_OFFLINE
+  ? new DynamoDB.DocumentClient({
+      region: 'localhost',
+      accessKeyId: 'MOCK_ACCESS_KEY_ID',
+      secretAccessKey: 'MOCK_SECRET_ACCESS_KEY',
+      endpoint: `http://${process.env.DYNAMODB_HOST || 'localhost'}:${
+        process.env.DYNAMODB_PORT || 8000
+      }`,
+    })
+  : new DynamoDB.DocumentClient();
 
 export async function getItems(userId: string): Promise<Item[]> {
   const params = {
@@ -28,7 +30,10 @@ export async function getItems(userId: string): Promise<Item[]> {
   return data.Items as Item[];
 }
 
-export async function getItemById(userId: string, itemId: string): Promise<Item> {
+export async function getItemById(
+  userId: string,
+  itemId: string
+): Promise<Item> {
   const params = {
     TableName: 'items',
     Key: {
@@ -40,7 +45,10 @@ export async function getItemById(userId: string, itemId: string): Promise<Item>
   const data = await db.get(params).promise();
 
   if (data.Item === undefined) {
-    throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
+    throw new ResponseError({
+      statusCode: 404,
+      message: `An item could not be found with id: ${itemId}`,
+    });
   }
 
   return data.Item as Item;
@@ -49,9 +57,10 @@ export async function getItemById(userId: string, itemId: string): Promise<Item>
 export async function createItem(userId: string, name: string): Promise<Item> {
   const params = {
     TableName: 'items',
-    ConditionExpression: 'attribute_not_exists(id) AND attribute_not_exists(userId)',
+    ConditionExpression:
+      'attribute_not_exists(id) AND attribute_not_exists(userId)',
     Item: {
-      id: uuidv4(),
+      id: v4(),
       userId,
       name,
       createdUtc: moment().utc().toISOString(),
@@ -63,7 +72,11 @@ export async function createItem(userId: string, name: string): Promise<Item> {
   return params.Item;
 }
 
-export async function updateItem(userId: string, itemId: string, name: string): Promise<void> {
+export async function updateItem(
+  userId: string,
+  itemId: string,
+  name: string
+): Promise<void> {
   try {
     const params = {
       TableName: 'items',
@@ -83,16 +96,22 @@ export async function updateItem(userId: string, itemId: string, name: string): 
     };
 
     await db.update(params).promise();
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ConditionalCheckFailedException') {
-      throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
+      throw new ResponseError({
+        statusCode: 404,
+        message: `An item could not be found with id: ${itemId}`,
+      });
     }
 
     throw err;
   }
 }
 
-export async function deleteItem(userId: string, itemId: string): Promise<void> {
+export async function deleteItem(
+  userId: string,
+  itemId: string
+): Promise<void> {
   try {
     const params = {
       TableName: 'items',
@@ -104,9 +123,12 @@ export async function deleteItem(userId: string, itemId: string): Promise<void> 
     };
 
     await db.delete(params).promise();
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ConditionalCheckFailedException') {
-      throw new ResponseError({ statusCode: 404, message: `An item could not be found with id: ${itemId}` });
+      throw new ResponseError({
+        statusCode: 404,
+        message: `An item could not be found with id: ${itemId}`,
+      });
     }
 
     throw err;
