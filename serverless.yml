@@ -26,7 +26,17 @@ provider:
         - dynamodb:Query
         - dynamodb:UpdateItem
       Resource:
-        - "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/items*"]]
+        - "Fn::Join":
+            [
+              "",
+              [
+                "arn:aws:dynamodb:",
+                { "Ref": "AWS::Region" },
+                ":",
+                { "Ref": "AWS::AccountId" },
+                ":table/items*",
+              ],
+            ]
 
 package:
   individually: true
@@ -35,8 +45,8 @@ custom:
   customDomain:
     domainName: sls-api.603.nz
     stage: ${self:provider.stage}
-    certificateArn: ${env:TF_VAR_acm_arn}
-    hostedZoneId: ${env:TF_VAR_route53_zone_id}
+    certificateArn: ${env:TF_VAR_acm_arn, ""}
+    hostedZoneId: ${env:TF_VAR_route53_zone_id, ""}
   webpack:
     webpackConfig: ./webpack.config.ts
     packager: "yarn"
@@ -158,43 +168,43 @@ resources:
       Properties:
         TableName: "items"
         AttributeDefinitions:
-        - AttributeName: "id"
-          AttributeType: "S"
-        - AttributeName: "userId"
-          AttributeType: "S"
+          - AttributeName: "id"
+            AttributeType: "S"
+          - AttributeName: "userId"
+            AttributeType: "S"
         KeySchema:
-        - AttributeName: "id"
-          KeyType: "HASH"
-        - AttributeName: "userId"
-          KeyType: "RANGE"
+          - AttributeName: "id"
+            KeyType: "HASH"
+          - AttributeName: "userId"
+            KeyType: "RANGE"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         GlobalSecondaryIndexes:
-        - IndexName: "userId-index"
-          KeySchema:
-          - AttributeName: "userId"
-            KeyType: "HASH"
-          Projection:
-            ProjectionType: "ALL"
-          ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
+          - IndexName: "userId-index"
+            KeySchema:
+              - AttributeName: "userId"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
     GatewayResponseDefault4XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
+      Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_4XX
         RestApiId:
-          Ref: 'ApiGatewayRestApi'
+          Ref: "ApiGatewayRestApi"
     GatewayResponseDefault5XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
+      Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
         ResponseType: DEFAULT_5XX
         RestApiId:
-          Ref: 'ApiGatewayRestApi'
+          Ref: "ApiGatewayRestApi"
