@@ -43,7 +43,7 @@
     "tslint-loader": "^3.5.4",
     "tsutils": "^3.21.0",
     "typescript": "^5.4.4",
-    "webpack": "^5.91.0",
+    "webpack": "^5.94.0",
     "webpack-node-externals": "^3.0.0"
   }
 }
