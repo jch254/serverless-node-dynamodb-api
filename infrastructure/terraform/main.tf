@@ -50,16 +50,9 @@ locals {
   build_notifier_region              = coalesce(var.build_notifier_region, var.aws_region)
   build_notifier_lambda_function_arn = "arn:aws:lambda:${local.build_notifier_region}:${data.aws_caller_identity.current.account_id}:function:${var.build_notifier_lambda_function_name}"
 
-  acm_validation_records = {
-    for key, record in module.acm_certificate.validation_records :
-    "acm_${key}" => {
-      name    = trimsuffix(record.name, ".")
-      type    = record.type
-      content = trimsuffix(record.value, ".")
-      proxied = false
-      ttl     = 1
-    }
-  }
+  # Single-domain cert -> exactly one validation record. The module returns a
+  # map keyed by an ACM-generated record name, which is unknown until apply.
+  acm_validation_record = one(values(module.acm_certificate.validation_records))
 
   api_dns_records = {
     host = {
@@ -139,20 +132,25 @@ module "acm_certificate" {
   }
 }
 
-module "dns_validation_records" {
-  source = "github.com/jch254/terraform-modules//cloudflare-dns-records?ref=1.17.0"
-
+resource "cloudflare_dns_record" "acm_validation" {
   zone_id = data.cloudflare_zone.zone.id
-  records = local.acm_validation_records
+  name    = trimsuffix(local.acm_validation_record.name, ".")
+  type    = local.acm_validation_record.type
+  content = trimsuffix(local.acm_validation_record.value, ".")
+  proxied = false
+  ttl     = 1
 }
 
 resource "aws_acm_certificate_validation" "api" {
   provider = aws.us_east_1
 
-  certificate_arn         = module.acm_certificate.arn
-  validation_record_fqdns = [for r in local.acm_validation_records : r.name]
+  certificate_arn = module.acm_certificate.arn
 
-  depends_on = [module.dns_validation_records]
+  validation_record_fqdns = [
+    trimsuffix(cloudflare_dns_record.acm_validation.name, ".")
+  ]
+
+  depends_on = [cloudflare_dns_record.acm_validation]
 }
 
 resource "aws_api_gateway_domain_name" "api" {
