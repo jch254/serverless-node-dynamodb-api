@@ -21,7 +21,6 @@ phases:
       - echo Installing Node dependencies...
       - corepack enable
       - corepack prepare pnpm@9.15.9 --activate
-      - pnpm config set store-dir /root/.pnpm-store
       - ./infrastructure/install.bash
 
   build:
@@ -34,4 +33,3 @@ cache:
     - "infrastructure/terraform/.terraform/modules/**/*"
     - "infrastructure/terraform/.terraform/plugins/**/*"
     - "/root/.terraform.d/plugin-cache/**/*"
-    - "/root/.pnpm-store/**/*"
