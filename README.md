@@ -1,6 +1,6 @@
 # [Serverless-node-dynamodb-api](https://serverless-api.603.nz)
 
-![Build Status](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiRUR0VDBzZ0EvLzU5dktNNDJTVU0yaWFJVXBpUmNVdDliWVJrQzM0ZlEwWmJQNUVSd2IwSU1LanQ5ajRFMGVvT0lJQmtGdjR4NE5OdFdOMFp4Q1dzUGIwPSIsIml2UGFyYW1ldGVyU3BlYyI6InpsM1g0TE9nTFdyRDZJK0EiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+![Build Status](https://codebuild.ap-southeast-4.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiRUR0VDBzZ0EvLzU5dktNNDJTVU0yaWFJVXBpUmNVdDliWVJrQzM0ZlEwWmJQNUVSd2IwSU1LanQ5ajRFMGVvT0lJQmtGdjR4NE5OdFdOMFp4Q1dzUGIwPSIsIml2UGFyYW1ldGVyU3BlYyI6InpsM1g0TE9nTFdyRDZJK0EiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 API powered by Serverless Framework, TypeScript, Webpack, Node.js and DynamoDB, intended as a starting point for Serverless APIs. I've also created a [React/Redux-powered UI](https://github.com/jch254/serverless-node-dynamodb-ui) to front this API. Auth0 handles authentication. You must signup/login to generate an auth token and gain access to the secured area. All endpoints in the API check validity of the auth token and return unauthorised if invalid, the UI then prompts you to log in again. The API also determines the identity of the user via the auth token.
 
