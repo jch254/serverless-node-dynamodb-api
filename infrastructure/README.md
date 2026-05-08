@@ -1,77 +1,66 @@
 # Deployment/Infrastructure
 
-This project is built, tested and deployed to AWS by CodeBuild. There are two components to deploy - the Serverless service and all supporting infrastructure which is defined with Terraform (CodeBuild, Route53, CloudFront etc.).
+This project is built and deployed to AWS by CodeBuild. Two layers:
 
-I've created Docker-powered build/deployment environments for [Serverless projects](https://github.com/jch254/docker-node-serverless) and [Node projects](https://github.com/jch254/docker-node-terraform-aws) to use with AWS CodeBuild and Bitbucket Pipelines.
+1. **Terraform** ([`infrastructure/terraform`](./terraform)) — CodeBuild project + IAM role, ACM cert (us-east-1), API Gateway custom domain, Cloudflare DNS, and SSM placeholders for the Cloudflare API token + Serverless Framework license key.
+2. **Serverless Framework** ([`serverless.yml`](../serverless.yml)) — Lambda functions, API Gateway REST API, DynamoDB tables, and the base path mapping onto the Terraform-owned custom domain.
 
-## Serverless Service
+Build images live in [docker-node-serverless](https://github.com/jch254/docker-node-serverless) and [docker-node-terraform-aws](https://github.com/jch254/docker-node-terraform-aws).
 
-To deploy/manage the Serverless service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/providers/aws/guide/credentials.md) for further info. After you have done this, run the commands below to deploy the service:
+## Prerequisites (one-time, account-level)
 
-**AUTH0_CLIENT_SECRET environment variable must be set before `pnpm run deploy` command below.**
+- S3 bucket for Terraform remote state (default `jch254-terraform-remote-state` in `ap-southeast-4`)
+- S3 bucket for CodeBuild dependency cache (default `jch254-codebuild-cache`)
+- Cloudflare zone for the apex domain (default `603.nz`) with API token created
+- Auth0 application configured as **Single Page Application** with **JWT Signature Algorithm = RS256**
+  - Allowed Callback URLs, Logout URLs, and Web Origins must include the UI origin (e.g. `https://serverless-api.603.nz`)
+- [shared-platform](https://github.com/jch254/shared-platform) deployed (provides the `shared-platform-build-notification-formatter` Lambda referenced for build-status notifications)
 
-E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET pnpm run deploy`
+## SSM placeholders managed by Terraform
 
-```
-pnpm install
-pnpm run create-domain
-pnpm run deploy
-```
+Terraform creates these `SecureString` parameters with placeholder values; populate the real values once with `aws ssm put-parameter ... --overwrite`. The modules' `lifecycle { ignore_changes = [value] }` keeps subsequent applies from clobbering them:
 
-## Supporting Infrastructure/Terraform
+| Parameter | Purpose |
+| --- | --- |
+| `/serverless-node-dynamodb-api/cloudflare-api-token` | Cloudflare API token for the Terraform `cloudflare` provider |
+| `/serverless-node-dynamodb-api/serverless-license-key` | Serverless Framework v4 license key consumed by `sls deploy` |
 
-**All commands below must be run from the repository root. Terraform lives in `/infrastructure/terraform`.**
+Auth0 secrets are no longer stored — the authorizer verifies tokens against Auth0's public JWKS (RS256), so only `AUTH0_DOMAIN` + `AUTH0_CLIENT_ID` (both public values) are needed and they are passed as plaintext env vars by the buildspec.
 
-To deploy to AWS, you must:
+## Local Terraform usage
 
-1. Install [Terraform](https://www.terraform.io/) and make sure it is in your PATH.
-1. Set your AWS credentials using one of the following options:
-   1. Set your credentials as the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-   1. Run `aws configure` and fill in the details it asks for.
-   1. Run on an EC2 instance with an IAM Role.
-   1. Run via CodeBuild or ECS Task with an IAM Role (see [buildspec-test.yml](../buildspec-test.yml) for workaround)
+**All commands below must be run from the repository root. Terraform lives in `infrastructure/terraform`.**
 
-#### Deploying infrastructure
+1. Install [Terraform](https://www.terraform.io/) and make sure it is in your `PATH`.
+1. Set AWS credentials via env vars (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`), `aws configure`, or an attached IAM Role.
+1. Export `CLOUDFLARE_API_TOKEN` (the Terraform `cloudflare` provider reads this directly).
 
-1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
-1. Initialise Terraform from `infrastructure/terraform`:
-```
+### Deploying / updating infrastructure
+
+```bash
+cd infrastructure/terraform
 terraform init \
-  -backend-config 'bucket=YOUR_S3_BUCKET' \
-  -backend-config 'key=YOUR_S3_KEY' \
-  -backend-config 'region=YOUR_REGION' \
-  -get=true \
-  -upgrade=true
+  -backend-config 'bucket=jch254-terraform-remote-state' \
+  -backend-config 'key=serverless-node-dynamodb-api' \
+  -backend-config 'region=ap-southeast-4'
+terraform plan -out main.tfplan
+terraform apply main.tfplan
 ```
-1. `terraform plan -out main.tfplan`
-1. `terraform apply main.tfplan`
 
-#### Updating infrastructure
+The repo's [`infrastructure/deploy-infrastructure.bash`](./deploy-infrastructure.bash) wraps the same flow for CodeBuild.
 
-1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
-1. Make necessary infrastructure code changes.
-1. Initialise Terraform from `infrastructure/terraform`:
-```
-terraform init \
-  -backend-config 'bucket=YOUR_S3_BUCKET' \
-  -backend-config 'key=YOUR_S3_KEY' \
-  -backend-config 'region=YOUR_REGION' \
-  -get=true \
-  -upgrade=true
-```
-1. `terraform plan -out main.tfplan`
-1. `terraform apply main.tfplan`
+### Destroying (use with care)
 
-#### Destroying infrastructure (use with care)
+```bash
+cd infrastructure/terraform
+terraform destroy
+```
 
-1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
-1. Initialise Terraform from `infrastructure/terraform`:
-```
-terraform init \
-  -backend-config 'bucket=YOUR_S3_BUCKET' \
-  -backend-config 'key=YOUR_S3_KEY' \
-  -backend-config 'region=YOUR_REGION' \
-  -get=true \
-  -upgrade=true
-```
-1. `terraform destroy`
+This will delete the API Gateway custom domain, ACM cert, Cloudflare DNS records, CodeBuild project, and IAM role. The Serverless Framework stack (Lambda, API Gateway REST API, DynamoDB) is owned separately — run `pnpm run remove` to tear that down first.
+
+## Deploying the Serverless service
+
+After Terraform infra is in place and SSM placeholders are populated:
+
+- **From CodeBuild**: push to `master` (default webhook branch). The buildspec runs `terraform apply` then `serverless deploy`.
+- **From local**: see the root [README](../README.md) `Packaging and deployment` section.
