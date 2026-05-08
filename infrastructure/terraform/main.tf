@@ -100,7 +100,17 @@ locals {
         "s3:*",
       ]
       Resource = "*"
-    }
+    },
+    {
+      # Serverless Framework v4 auto-manages a shared deployment bucket and
+      # records its name in SSM under /serverless-framework/*.
+      Effect = "Allow"
+      Action = [
+        "ssm:GetParameter",
+        "ssm:PutParameter",
+      ]
+      Resource = "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/serverless-framework/*"
+    },
   ]
 }
 
