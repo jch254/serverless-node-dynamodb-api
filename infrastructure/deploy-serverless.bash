@@ -2,6 +2,6 @@
 
 echo Running Serverless deploy...
 
-yarn run deploy
+pnpm run deploy
 
 echo Finished running Serverless deploy

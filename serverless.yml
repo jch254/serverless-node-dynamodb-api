@@ -1,5 +1,7 @@
 service: serverless-node-dynamodb-api
 
+frameworkVersion: "4"
+
 plugins:
   - serverless-webpack
   - serverless-dynamodb
@@ -9,50 +11,52 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs22.x
   memorySize: 1024
   stage: prod
-  region: ap-southeast-2
-  iamManagedPolicies:
-    - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Scan
-        - dynamodb:PutItem
-        - dynamodb:GetItem
-        - dynamodb:DeleteItem
-        - dynamodb:Query
-        - dynamodb:UpdateItem
-      Resource:
-        - "Fn::Join":
-            [
-              "",
-              [
-                "arn:aws:dynamodb:",
-                { "Ref": "AWS::Region" },
-                ":",
-                { "Ref": "AWS::AccountId" },
-                ":table/items*",
-              ],
-            ]
+  region: ap-southeast-4
+  iam:
+    role:
+      managedPolicies:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Scan
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:UpdateItem
+          Resource:
+            - "Fn::Join":
+                [
+                  "",
+                  [
+                    "arn:aws:dynamodb:",
+                    { "Ref": "AWS::Region" },
+                    ":",
+                    { "Ref": "AWS::AccountId" },
+                    ":table/items*",
+                  ],
+                ]
 
 package:
   individually: true
+
+build:
+  esbuild: false
 
 custom:
   customDomain:
     domainName: sls-api.603.nz
     stage: ${self:provider.stage}
-    certificateArn: ${env:TF_VAR_acm_arn, ""}
-    hostedZoneId: ${env:TF_VAR_route53_zone_id, ""}
+    createRoute53Record: false
+    autoDomain: false
   webpack:
     webpackConfig: ./webpack.config.ts
-    packager: "yarn"
-    includeModules:
-      forceExclude:
-        - aws-sdk
+    includeModules: false
   serverless-dynamodb:
     start:
       port: ${env:DYNAMODB_PORT, 8000}

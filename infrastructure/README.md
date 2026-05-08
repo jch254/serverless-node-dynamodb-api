@@ -8,19 +8,19 @@ I've created Docker-powered build/deployment environments for [Serverless projec
 
 To deploy/manage the Serverless service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/providers/aws/guide/credentials.md) for further info. After you have done this, run the commands below to deploy the service:
 
-**AUTH0_CLIENT_SECRET environment variable must be set before `yarn run deploy` command below.**
+**AUTH0_CLIENT_SECRET environment variable must be set before `pnpm run deploy` command below.**
 
-E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run deploy`
+E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET pnpm run deploy`
 
 ```
-yarn install
-yarn run create-domain
-yarn run deploy
+pnpm install
+pnpm run create-domain
+pnpm run deploy
 ```
 
 ## Supporting Infrastructure/Terraform
 
-**All commands below must be run in the /infrastructure directory.**
+**All commands below must be run from the repository root. Terraform lives in `/infrastructure/terraform`.**
 
 To deploy to AWS, you must:
 
@@ -33,8 +33,8 @@ To deploy to AWS, you must:
 
 #### Deploying infrastructure
 
-1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
-1. Initialise Terraform:
+1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
+1. Initialise Terraform from `infrastructure/terraform`:
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \
@@ -48,9 +48,9 @@ terraform init \
 
 #### Updating infrastructure
 
-1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
+1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
 1. Make necessary infrastructure code changes.
-1. Initialise Terraform:
+1. Initialise Terraform from `infrastructure/terraform`:
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \
@@ -64,8 +64,8 @@ terraform init \
 
 #### Destroying infrastructure (use with care)
 
-1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
-1. Initialise Terraform:
+1. Export `AWS_DEFAULT_REGION`, `REMOTE_STATE_BUCKET`, and optionally `TF_STATE_KEY`.
+1. Initialise Terraform from `infrastructure/terraform`:
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \

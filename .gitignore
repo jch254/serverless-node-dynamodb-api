@@ -10,3 +10,4 @@ yarn-error.log
 .dynamodb/
 .vscode/
 dynamodb.tar.gz
+.terraform.lock.hcl

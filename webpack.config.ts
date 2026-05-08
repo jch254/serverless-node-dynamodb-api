@@ -1,11 +1,8 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path = require('path');
 import slsw = require('serverless-webpack');
-import nodeExternals = require('webpack-node-externals');
 
 const srcPath = path.join(__dirname, 'src');
-const nodeModulesPath = path.join(__dirname, 'node_modules');
-
 module.exports = {
   mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   devtool: 'cheap-module-source-map',
@@ -23,9 +20,10 @@ module.exports = {
   target: 'node',
   resolve: {
     extensions: ['.ts', '.js', '.json'],
-    modules: [srcPath, nodeModulesPath],
+    conditionNames: ['node', 'require'],
+    mainFields: ['main'],
+    modules: [srcPath, 'node_modules'],
   },
-  externals: ['aws-sdk', nodeExternals()],
   module: {
     rules: [
       {

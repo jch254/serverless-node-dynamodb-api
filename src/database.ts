@@ -1,19 +1,31 @@
-import { DynamoDB } from 'aws-sdk';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  QueryCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import Item from './Item';
 import ResponseError from './ResponseError';
 
-const db = process.env.IS_OFFLINE
-  ? new DynamoDB.DocumentClient({
+const dbClient = process.env.IS_OFFLINE
+  ? new DynamoDBClient({
       region: 'localhost',
-      accessKeyId: 'MOCK_ACCESS_KEY_ID',
-      secretAccessKey: 'MOCK_SECRET_ACCESS_KEY',
+      credentials: {
+        accessKeyId: 'MOCK_ACCESS_KEY_ID',
+        secretAccessKey: 'MOCK_SECRET_ACCESS_KEY',
+      },
       endpoint: `http://${process.env.DYNAMODB_HOST || 'localhost'}:${
         process.env.DYNAMODB_PORT || 8000
       }`,
     })
-  : new DynamoDB.DocumentClient();
+  : new DynamoDBClient({});
+
+const db = DynamoDBDocumentClient.from(dbClient);
 
 export async function getItems(userId: string): Promise<Item[]> {
   const params = {
@@ -25,7 +37,7 @@ export async function getItems(userId: string): Promise<Item[]> {
     },
   };
 
-  const data = await db.query(params).promise();
+  const data = await db.send(new QueryCommand(params));
 
   return data.Items as Item[];
 }
@@ -42,7 +54,7 @@ export async function getItemById(
     },
   };
 
-  const data = await db.get(params).promise();
+  const data = await db.send(new GetCommand(params));
 
   if (data.Item === undefined) {
     throw new ResponseError({
@@ -67,7 +79,7 @@ export async function createItem(userId: string, name: string): Promise<Item> {
     },
   };
 
-  await db.put(params).promise();
+  await db.send(new PutCommand(params));
 
   return params.Item;
 }
@@ -80,7 +92,7 @@ export async function updateItem(
   try {
     const params = {
       TableName: 'items',
-      ReturnValues: 'NONE',
+      ReturnValues: 'NONE' as const,
       ConditionExpression: 'attribute_exists(id) AND attribute_exists(userId)',
       UpdateExpression: 'SET #name = :name',
       Key: {
@@ -95,9 +107,9 @@ export async function updateItem(
       },
     };
 
-    await db.update(params).promise();
+    await db.send(new UpdateCommand(params));
   } catch (err: any) {
-    if (err.code === 'ConditionalCheckFailedException') {
+    if (err.name === 'ConditionalCheckFailedException') {
       throw new ResponseError({
         statusCode: 404,
         message: `An item could not be found with id: ${itemId}`,
@@ -122,9 +134,9 @@ export async function deleteItem(
       },
     };
 
-    await db.delete(params).promise();
+    await db.send(new DeleteCommand(params));
   } catch (err: any) {
-    if (err.code === 'ConditionalCheckFailedException') {
+    if (err.name === 'ConditionalCheckFailedException') {
       throw new ResponseError({
         statusCode: 404,
         message: `An item could not be found with id: ${itemId}`,
