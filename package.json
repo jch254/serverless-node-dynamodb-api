@@ -1,6 +1,6 @@
 {
   "name": "serverless-node-dynamodb-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Serverless, Node and DynamoDB-powered API",
   "packageManager": "pnpm@9.15.9",
   "engines": {
