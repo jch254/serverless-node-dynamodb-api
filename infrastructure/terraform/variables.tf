@@ -22,12 +22,6 @@ variable "api_host" {
   default     = "sls-api.603.nz"
 }
 
-variable "auth0_client_secret_parameter_name" {
-  description = "SSM Parameter Store name containing the Auth0 client secret used by the API authorizer."
-  type        = string
-  default     = "/serverless-node-dynamodb-api/auth0-client-secret"
-}
-
 variable "cloudflare_api_token_parameter_name" {
   description = "SSM Parameter Store name containing the Cloudflare API token."
   type        = string

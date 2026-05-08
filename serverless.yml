@@ -83,7 +83,8 @@ functions:
     handler: src/index.authorizer
     timeout: 30
     environment:
-      AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
+      AUTH0_DOMAIN: ${env:AUTH0_DOMAIN}
+      AUTH0_CLIENT_ID: ${env:AUTH0_CLIENT_ID}
 
   pingo:
     handler: src/index.pingHandler

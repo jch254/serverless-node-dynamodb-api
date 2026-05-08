@@ -6,6 +6,7 @@ import {
   CustomAuthorizerEvent,
 } from 'aws-lambda';
 import * as jwt from 'jsonwebtoken';
+import jwksClient from 'jwks-rsa';
 import {
   createItem,
   deleteItem,
@@ -13,6 +14,26 @@ import {
   getItemById,
   updateItem,
 } from './database';
+
+const jwks = jwksClient({
+  jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+  cache: true,
+  rateLimit: true,
+});
+
+const getSigningKey: jwt.GetPublicKeyOrSecret = (header, callback) => {
+  if (!header.kid) {
+    callback(new Error('Missing kid in token header'));
+    return;
+  }
+  jwks.getSigningKey(header.kid, (err, key) => {
+    if (err || !key) {
+      callback(err ?? new Error('Signing key not found'));
+      return;
+    }
+    callback(null, key.getPublicKey());
+  });
+};
 import Response from './Response';
 import ResponseError from './ResponseError';
 
@@ -36,17 +57,28 @@ export const authorizer = (
   callback: Callback
 ) => {
   console.log('authorizer');
-  console.log('event', JSON.stringify(event));
-  console.log('context', JSON.stringify(context));
 
-  try {
-    const authHeader = event.authorizationToken?.split(' ') || [];
+  const authHeader = event.authorizationToken?.split(' ') || [];
 
-    if (authHeader.length === 2 && authHeader[0].toLowerCase() === 'bearer') {
-      const decoded = jwt.verify(
-        authHeader[1],
-        process.env.AUTH0_CLIENT_SECRET as string
-      ) as { sub: string };
+  if (authHeader.length !== 2 || authHeader[0].toLowerCase() !== 'bearer') {
+    callback('Unauthorized', undefined);
+    return;
+  }
+
+  jwt.verify(
+    authHeader[1],
+    getSigningKey,
+    {
+      algorithms: ['RS256'],
+      issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+      audience: process.env.AUTH0_CLIENT_ID,
+    },
+    (err, decoded) => {
+      if (err || !decoded || typeof decoded === 'string' || !decoded.sub) {
+        console.log('Token verification failed', err);
+        callback('Unauthorized', undefined);
+        return;
+      }
 
       const authResponse: AuthResponse = {
         policyDocument: {
@@ -63,13 +95,8 @@ export const authorizer = (
       };
 
       callback(undefined, authResponse);
-    } else {
-      callback('Unauthorized', undefined);
     }
-  } catch (err) {
-    console.log(err);
-    callback('Unauthorized', undefined);
-  }
+  );
 };
 
 // GET /items

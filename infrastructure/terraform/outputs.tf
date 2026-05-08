@@ -18,11 +18,6 @@ output "acm_certificate_arn" {
   value       = aws_acm_certificate_validation.api.certificate_arn
 }
 
-output "auth0_client_secret_parameter_name" {
-  description = "SSM parameter name for the Auth0 client secret."
-  value       = module.auth0_client_secret_parameter.name
-}
-
 output "cloudflare_api_token_parameter_name" {
   description = "SSM parameter name for the Cloudflare API token."
   value       = module.cloudflare_api_token_parameter.name

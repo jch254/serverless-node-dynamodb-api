@@ -7,8 +7,9 @@ env:
     REMOTE_STATE_BUCKET: "jch254-terraform-remote-state"
     TF_STATE_KEY: "serverless-node-dynamodb-api"
     NODE_OPTIONS: "--max-old-space-size=3072"
+    AUTH0_DOMAIN: "603.au.auth0.com"
+    AUTH0_CLIENT_ID: "PabWYDl71ibZ920e3XjoPIe0QoJVrhtY"
   parameter-store:
-    AUTH0_CLIENT_SECRET: "/serverless-node-dynamodb-api/auth0-client-secret"
     CLOUDFLARE_API_TOKEN: "/serverless-node-dynamodb-api/cloudflare-api-token"
     SERVERLESS_LICENSE_KEY: "/serverless-node-dynamodb-api/serverless-license-key"
 

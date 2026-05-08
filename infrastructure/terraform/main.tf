@@ -114,13 +114,6 @@ locals {
   ]
 }
 
-module "auth0_client_secret_parameter" {
-  source = "github.com/jch254/terraform-modules//ssm-parameter-placeholder?ref=1.17.0"
-
-  name        = var.auth0_client_secret_parameter_name
-  description = "Auth0 client secret used by the serverless-node-dynamodb-api authorizer"
-}
-
 module "cloudflare_api_token_parameter" {
   source = "github.com/jch254/terraform-modules//ssm-parameter-placeholder?ref=1.17.0"
 
@@ -197,7 +190,6 @@ module "codebuild_role" {
   s3_object_arns = [local.remote_state_object_arn]
 
   ssm_parameter_arns = [
-    module.auth0_client_secret_parameter.arn,
     module.cloudflare_api_token_parameter.arn,
     module.serverless_license_key_parameter.arn,
   ]
