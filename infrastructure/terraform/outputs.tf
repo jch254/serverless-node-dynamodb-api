@@ -28,6 +28,11 @@ output "cloudflare_api_token_parameter_name" {
   value       = module.cloudflare_api_token_parameter.name
 }
 
+output "serverless_license_key_parameter_name" {
+  description = "SSM parameter name for the Serverless Framework v4 license key."
+  value       = module.serverless_license_key_parameter.name
+}
+
 output "zone_id" {
   description = "Cloudflare zone ID for the configured domain."
   value       = data.cloudflare_zone.zone.id

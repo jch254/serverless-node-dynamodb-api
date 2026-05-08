@@ -9,6 +9,7 @@ env:
   parameter-store:
     AUTH0_CLIENT_SECRET: "/serverless-node-dynamodb-api/auth0-client-secret"
     CLOUDFLARE_API_TOKEN: "/serverless-node-dynamodb-api/cloudflare-api-token"
+    SERVERLESS_LICENSE_KEY: "/serverless-node-dynamodb-api/serverless-license-key"
 
 phases:
   install:

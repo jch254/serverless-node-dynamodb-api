@@ -34,6 +34,12 @@ variable "cloudflare_api_token_parameter_name" {
   default     = "/serverless-node-dynamodb-api/cloudflare-api-token"
 }
 
+variable "serverless_license_key_parameter_name" {
+  description = "SSM Parameter Store name containing the Serverless Framework v4 license key."
+  type        = string
+  default     = "/serverless-node-dynamodb-api/serverless-license-key"
+}
+
 variable "codebuild_project_name" {
   description = "Name of the CodeBuild project that deploys the Serverless API."
   type        = string

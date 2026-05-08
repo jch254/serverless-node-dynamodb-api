@@ -118,6 +118,13 @@ module "cloudflare_api_token_parameter" {
   description = "Cloudflare API token for serverless-node-dynamodb-api Terraform"
 }
 
+module "serverless_license_key_parameter" {
+  source = "github.com/jch254/terraform-modules//ssm-parameter-placeholder?ref=1.17.0"
+
+  name        = var.serverless_license_key_parameter_name
+  description = "Serverless Framework v4 license key used by serverless-node-dynamodb-api"
+}
+
 module "acm_certificate" {
   source = "github.com/jch254/terraform-modules//acm-dns-validated-certificate?ref=1.17.0"
 
@@ -182,6 +189,7 @@ module "codebuild_role" {
   ssm_parameter_arns = [
     module.auth0_client_secret_parameter.arn,
     module.cloudflare_api_token_parameter.arn,
+    module.serverless_license_key_parameter.arn,
   ]
 
   iam_role_arns           = []
