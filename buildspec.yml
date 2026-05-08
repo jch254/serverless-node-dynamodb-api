@@ -6,6 +6,7 @@ env:
     AWS_DEFAULT_REGION: "ap-southeast-4"
     REMOTE_STATE_BUCKET: "jch254-terraform-remote-state"
     TF_STATE_KEY: "serverless-node-dynamodb-api"
+    NODE_OPTIONS: "--max-old-space-size=3072"
   parameter-store:
     AUTH0_CLIENT_SECRET: "/serverless-node-dynamodb-api/auth0-client-secret"
     CLOUDFLARE_API_TOKEN: "/serverless-node-dynamodb-api/cloudflare-api-token"
